@@ -13,34 +13,34 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertTrue;
 
-class TestVertexImp extends Vertex<Object> {
-    TestVertexImp(int id, String label, int x, int y) {
-        setId(id);
-        setLabel(label);
-        setX(new Coordinate(x));
-        setY(new Coordinate(y));
-    }
-
-    @Override
-    public Object getData() {
-        return null;
-    }
-
-    @Override
-    public void setData(Object data) {
-
-    }
-
-    @Override
-    public String getDataClass() {
-        return null;
-    }
-}
-
 public class TestVertex {
+    class TestVertexImp extends Vertex<Object> {
+        TestVertexImp(int id, String label, int x, int y) {
+            setId(id);
+            setLabel(label);
+            setX(new Coordinate(x));
+            setY(new Coordinate(y));
+        }
+
+        @Override
+        public Object getData() {
+            return null;
+        }
+
+        @Override
+        public void setData(Object data) {
+
+        }
+
+        @Override
+        public String getDataClass() {
+            return null;
+        }
+    }
+
     @Test
     public void shouldAssignVertex() {
-        TestVertexImp testVertexImp = new TestVertexImp(0,"v1",1,2);
+        TestVertexImp testVertexImp = new TestVertexImp(0, "v1", 1, 2);
         assertThat(testVertexImp.getLabel(), is("v1"));
         assertThat(testVertexImp.getX().getCoordinate(), is(1));
         assertThat(testVertexImp.getY().getCoordinate(), is(2));
@@ -48,12 +48,12 @@ public class TestVertex {
 
     @Test
     public void shouldSortCorrectly() {
-        TestVertexImp v1 = new TestVertexImp(0,"v1",1,3);
-        TestVertexImp v2 = new TestVertexImp(2,"v2",1,2);
-        TestVertexImp v3 = new TestVertexImp(3,"v3",2,2);
-        TestVertexImp v4 = new TestVertexImp(1,"v4",3,2);
-        TestVertexImp v5 = new TestVertexImp(5,"v5",0,2);
-        TestVertexImp v6 = new TestVertexImp(4,"v6",0,1);
+        TestVertexImp v1 = new TestVertexImp(0, "v1", 1, 3);
+        TestVertexImp v2 = new TestVertexImp(2, "v2", 1, 2);
+        TestVertexImp v3 = new TestVertexImp(3, "v3", 2, 2);
+        TestVertexImp v4 = new TestVertexImp(1, "v4", 3, 2);
+        TestVertexImp v5 = new TestVertexImp(5, "v5", 0, 2);
+        TestVertexImp v6 = new TestVertexImp(4, "v6", 0, 1);
 
         TreeSet<TestVertexImp> vertices = new TreeSet<>();
         vertices.add(v1);

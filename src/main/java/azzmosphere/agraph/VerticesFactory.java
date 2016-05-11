@@ -11,16 +11,17 @@ public final class VerticesFactory {
 
 
     public static Vertex createVertex(int id, Object o, int x, int y) throws Exception {
-        Vertex v;
-        try {
-            v = VerticesMapper.valueOf(o.getClass().getName()).getVertex(o);
-            v.setId(id);
-            v.setX(new Coordinate(x));
-            v.setY(new Coordinate(y));
+        Vertex v = null;
+
+        for (VerticesMapper m : VerticesMapper.values()) {
+            if (m.toString().equals(o.getClass().getCanonicalName())){
+                v = m.getVertex(o);
+            }
         }
-        catch (Exception e) {
-            throw new Exception(Object.class.getName() + "is not supported");
-        }
+
+        v.setId(id);
+        v.setX(new Coordinate(x));
+        v.setY(new Coordinate(y));
         return v;
     }
 

@@ -1,7 +1,6 @@
 package azzmosphere.agraph;
 
 import java.util.ArrayList;
-import java.util.jar.Pack200;
 
 /**
  * Base class to implement the vertex.
@@ -90,11 +89,10 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
      * @return adjaventNodeMatrix
      */
     @Override
-    public     ArrayList<ArrayList<Integer>> adjacentNodes(ArrayList<ArrayList<Integer>> adjacentNodeMatrix) {
-
+    public ArrayList<ArrayList<Integer>> adjacentNodes(ArrayList<ArrayList<Integer>> adjacentNodeMatrix) {
         for (Edge e : edges) {
-             adjacentNodeMatrix.get(id).add(e.getHead().getId(), adjacentNodeMatrix.get(id).get(e.getHead().getId()) + 1);
-             adjacentNodeMatrix.get(e.getHead().getId()).add(id, adjacentNodeMatrix.get(e.getHead().getId()).get(id) + 1);
+            adjacentNodeMatrix.get(id).add(e.getHead().getId(), adjacentNodeMatrix.get(id).get(e.getHead().getId()) + 1);
+            adjacentNodeMatrix.get(e.getHead().getId()).add(id, adjacentNodeMatrix.get(e.getHead().getId()).get(id) + 1);
         }
         return adjacentNodeMatrix;
     }

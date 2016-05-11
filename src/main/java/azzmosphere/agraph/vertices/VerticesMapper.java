@@ -16,7 +16,7 @@ public enum VerticesMapper implements  VerticesMapperInterface {
     ULTRA_SONIC_SENSOR_CNAME {
         @Override
         public String toString() {
-            return UltraSonicSensor.class.getName();
+            return UltraSonicSensor.class.getCanonicalName();
         }
 
         @Override
@@ -28,10 +28,10 @@ public enum VerticesMapper implements  VerticesMapperInterface {
     },
 
     /* Audio stream */
-    AUDIO_INPUT_STREAM_CNAME{
+    AUDIO_INPUT_STREAM_CNAME {
         @Override
         public String toString() {
-            return AudioInputStream.class.getName();
+            return AudioInputStream.class.getCanonicalName();
         }
 
         @Override
