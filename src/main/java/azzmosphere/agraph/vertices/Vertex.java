@@ -112,7 +112,7 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
      */
     private void createSlots(int id, ArrayList<ArrayList<Integer>> adjacentNodeMatrix) {
         if (adjacentNodeMatrix.size() <= id) {
-            for (int n = adjacentNodeMatrix.size(); n < (id + 1); n ++) {
+            for (int n = adjacentNodeMatrix.size(); n < (id + 1); n++) {
                 ArrayList<Integer> a = new ArrayList<>();
                 adjacentNodeMatrix.add(a);
                 adjacentNodeMatrix.get(id).add(0);
@@ -127,7 +127,7 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
 
     private void createInnerSlots(int id, ArrayList<Integer> adjacentNodes) {
         if (adjacentNodes.size() <= id) {
-            for (int n = adjacentNodes.size(); n < (id + 1); n ++) {
+            for (int n = adjacentNodes.size(); n < (id + 1); n++) {
                 adjacentNodes.add(0);
             }
         }
