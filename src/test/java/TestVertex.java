@@ -5,7 +5,7 @@
  */
 
 import azzmosphere.agraph.Coordinate;
-import azzmosphere.agraph.Vertex;
+import azzmosphere.agraph.vertices.Vertex;
 import org.junit.Test;
 import java.util.TreeSet;
 

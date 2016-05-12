@@ -1,5 +1,7 @@
 package azzmosphere.agraph;
 
+import azzmosphere.agraph.vertices.Vertex;
+
 /**
  * Connecting point of two vertices.
  *
@@ -8,6 +10,7 @@ package azzmosphere.agraph;
 public class Edge {
     private Vertex tail;
     private Vertex head;
+    private String label;
 
     public Vertex getTail() {
         return tail;
@@ -23,5 +26,13 @@ public class Edge {
 
     public void setHead(Vertex head) {
         this.head = head;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

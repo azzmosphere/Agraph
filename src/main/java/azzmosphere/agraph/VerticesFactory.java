@@ -1,5 +1,6 @@
 package azzmosphere.agraph;
 
+import azzmosphere.agraph.vertices.Vertex;
 import azzmosphere.agraph.vertices.VerticesMapper;
 
 /**
@@ -14,7 +15,7 @@ public final class VerticesFactory {
         Vertex v = null;
 
         for (VerticesMapper m : VerticesMapper.values()) {
-            if (m.toString().equals(o.getClass().getCanonicalName())){
+            if (m.toString().equals(o.getClass().getCanonicalName())) {
                 v = m.getVertex(o);
             }
         }

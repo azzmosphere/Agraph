@@ -1,6 +1,5 @@
 package azzmosphere.agraph.vertices;
 
-import azzmosphere.agraph.Vertex;
 import azzmosphere.agraph.datastructures.UltraSonicSensor;
 
 /**

@@ -1,5 +1,8 @@
-package azzmosphere.agraph;
+package azzmosphere.agraph.vertices;
 
+
+import azzmosphere.agraph.Coordinate;
+import azzmosphere.agraph.Edge;
 
 import java.util.ArrayList;
 
