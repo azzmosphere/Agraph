@@ -85,51 +85,5 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
         return label + "(" + x + "," + y + ")";
     }
 
-    /**
-     * Updates the adjacent node matrix with nodes adjacent to this vertex.
-     *
-     * @param adjacentNodeMatrix
-     * @return adjaventNodeMatrix
-     */
-    @Override
-    public ArrayList<ArrayList<Integer>> adjacentNodes(ArrayList<ArrayList<Integer>> adjacentNodeMatrix) {
 
-        createSlots(id, adjacentNodeMatrix);
-
-        for (Edge e : edges) {
-            int eId = e.getHead().getId();
-            createSlots(eId, adjacentNodeMatrix);
-
-            adjacentNodeMatrix.get(id).set(eId, 1);
-            adjacentNodeMatrix.get(eId).set(id, 1);
-        }
-        return adjacentNodeMatrix;
-    }
-
-    /*
-     * create a slot for all elements up to "id" and create inner slots so that it formulates
-     * a proper matrix.
-     */
-    private void createSlots(int id, ArrayList<ArrayList<Integer>> adjacentNodeMatrix) {
-        if (adjacentNodeMatrix.size() <= id) {
-            for (int n = adjacentNodeMatrix.size(); n < (id + 1); n++) {
-                ArrayList<Integer> a = new ArrayList<>();
-                adjacentNodeMatrix.add(a);
-                adjacentNodeMatrix.get(id).add(0);
-
-                for (int i = id; i >= 0; i--) {
-                    a = adjacentNodeMatrix.get(i);
-                    createInnerSlots(id, a);
-                }
-            }
-        }
-    }
-
-    private void createInnerSlots(int id, ArrayList<Integer> adjacentNodes) {
-        if (adjacentNodes.size() <= id) {
-            for (int n = adjacentNodes.size(); n < (id + 1); n++) {
-                adjacentNodes.add(0);
-            }
-        }
-    }
 }

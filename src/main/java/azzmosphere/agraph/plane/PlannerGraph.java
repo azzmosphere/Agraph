@@ -52,7 +52,7 @@ public class PlannerGraph {
      *
      * https://en.wikipedia.org/wiki/Adjacency_matrix
      */
-    private ArrayList<ArrayList<Integer>> adjacencyMatrix = new ArrayList<>();
+    private ArrayList<ArrayList<Boolean>> adjacencyMatrix = new ArrayList<>();
     private ArrayList<Vertex> vertices = new ArrayList<>();
 
 
@@ -71,11 +71,11 @@ public class PlannerGraph {
 
     }
 
-    public ArrayList<ArrayList<Integer>> getAdjacencyMatrix() {
+    public ArrayList<ArrayList<Boolean>> getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
 
-    public void setAdjacencyMatrix(ArrayList<ArrayList<Integer>> adjacencyMatrix) {
+    public void setAdjacencyMatrix(ArrayList<ArrayList<Boolean>> adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
     }
 
@@ -99,7 +99,7 @@ public class PlannerGraph {
 
     public Edge createEdge(Vertex v1, Vertex v2) throws  Exception {
         Edge e = EdgeFactory.createEdge(v1, v2);
-        v1.adjacentNodes(getAdjacencyMatrix());
+        e.adjacentNodes(getAdjacencyMatrix(), v1);
 
         return e;
     }

@@ -25,10 +25,16 @@ public class TestAdjacencyMatrix {
         pg.createEdge(v3, v4); //e4
         pg.createEdge(v4, v1); //e5
 
-        ArrayList<ArrayList<Integer>> adjacentMatrix = pg.getAdjacencyMatrix();
+        ArrayList<ArrayList<Boolean>> adjacentMatrix = pg.getAdjacencyMatrix();
 
-        for (ArrayList<Integer> i : adjacentMatrix) {
+
+
+
+        for (ArrayList<Boolean> i : adjacentMatrix) {
             System.out.println(i);
         }
+
+        //long x = 0x1 << 4 - 1;
+        //System.out.println("x = " + x);
     }
 }

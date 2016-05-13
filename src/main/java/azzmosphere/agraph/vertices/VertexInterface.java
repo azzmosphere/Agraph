@@ -79,8 +79,6 @@ public interface VertexInterface<T, Y> extends Comparable<T> {
     boolean isEqual(T object);
 
 
-    ArrayList<ArrayList<Integer>> adjacentNodes(ArrayList<ArrayList<Integer>> adjacentNodeMatrix);
-
     /**
      * data that is stored on node.
      *
