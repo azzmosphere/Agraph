@@ -40,21 +40,27 @@ public class Edge {
     /**
      * Updates the adjacent node matrix with nodes adjacent to this vertex.
      *
-     * @param adjacentNodeMatrix
-     * @return adjaventNodeMatrix
+     * @param adjacentNodeMatrix Matrix before modification
+     * @return adjacentNodes matrix after modification.
      */
-    public ArrayList<ArrayList<Boolean>> adjacentNodes(ArrayList<ArrayList<Boolean>> adjacentNodeMatrix, Vertex v) {
+    public ArrayList<Integer> adjacentNodes(ArrayList<Integer> adjacentNodeMatrix) {
 
+        Vertex v = getTail();
         int id = v.getId();
         ArrayList<Edge> edges = v.getEdges();
         createSlots(id, adjacentNodeMatrix);
 
         for (Edge e : edges) {
             int eId = e.getHead().getId();
-            createSlots(eId, adjacentNodeMatrix);
 
-            adjacentNodeMatrix.get(id).set(eId, true);
-            adjacentNodeMatrix.get(eId).set(id, true);
+            int innerSlots = adjacentNodeMatrix.get(id);
+            innerSlots = 0x1 << eId | innerSlots;
+            adjacentNodeMatrix.set(id, innerSlots);
+
+            createSlots(eId, adjacentNodeMatrix);
+            innerSlots = adjacentNodeMatrix.get(eId);
+            innerSlots = 0x1 << id | innerSlots;
+            adjacentNodeMatrix.set(eId, innerSlots);
         }
         return adjacentNodeMatrix;
     }
@@ -63,25 +69,11 @@ public class Edge {
      * create a slot for all elements up to "id" and create inner slots so that it formulates
      * a proper matrix.
      */
-    private void createSlots(int id, ArrayList<ArrayList<Boolean>> adjacentNodeMatrix) {
+    private void createSlots(int id, ArrayList<Integer> adjacentNodeMatrix) {
         if (adjacentNodeMatrix.size() <= id) {
             for (int n = adjacentNodeMatrix.size(); n < (id + 1); n++) {
-                ArrayList<Boolean> a = new ArrayList<>();
-                adjacentNodeMatrix.add(a);
-                adjacentNodeMatrix.get(id).add(false);
+                adjacentNodeMatrix.add(0);
 
-                for (int i = id; i >= 0; i--) {
-                    a = adjacentNodeMatrix.get(i);
-                    createInnerSlots(id, a);
-                }
-            }
-        }
-    }
-
-    private void createInnerSlots(int id, ArrayList<Boolean> adjacentNodes) {
-        if (adjacentNodes.size() <= id) {
-            for (int n = adjacentNodes.size(); n < (id + 1); n++) {
-                adjacentNodes.add(false);
             }
         }
     }

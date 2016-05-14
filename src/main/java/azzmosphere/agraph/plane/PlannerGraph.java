@@ -1,7 +1,6 @@
 package azzmosphere.agraph.plane;
 
 import java.util.ArrayList;
-
 import azzmosphere.agraph.vertices.Vertex;
 import azzmosphere.agraph.VerticesFactory;
 import azzmosphere.agraph.Edge;
@@ -52,7 +51,12 @@ public class PlannerGraph {
      *
      * https://en.wikipedia.org/wiki/Adjacency_matrix
      */
-    private ArrayList<ArrayList<Boolean>> adjacencyMatrix = new ArrayList<>();
+
+    /**
+     * To conserve space the matrix is stored as Long that has the bit's set. This also greatly simplifies the
+     * insertion operations done by the Edge class.
+     */
+    private ArrayList<Integer> adjacencyMatrix = new ArrayList<>();
     private ArrayList<Vertex> vertices = new ArrayList<>();
 
 
@@ -71,12 +75,55 @@ public class PlannerGraph {
 
     }
 
+    /**
+     * Retrieves the matrix with booleans set to true or false adjecent vertices.
+     *
+     * This implementation is only required for JAVA in lower level languages such C++ or object C this can be done
+     * implicitly because a boolean long, etc are equivalent.
+     *
+     * @return
+     */
     public ArrayList<ArrayList<Boolean>> getAdjacencyMatrix() {
-        return adjacencyMatrix;
+
+        ArrayList<ArrayList<Boolean>> bitsMatrix = new ArrayList<>();
+
+        /* create slots */
+        for (int i = 0; i < adjacencyMatrix.size(); i++) {
+            bitsMatrix.add(new ArrayList<>());
+            for (int y = 0; y < adjacencyMatrix.size(); y++) {
+                bitsMatrix.get(i).add(false);
+            }
+        }
+
+        /* convert to booleans */
+        for (int y = adjacencyMatrix.size() - 1; y >= 0; y--) {
+            for (int i = adjacencyMatrix.size() - 1; i >= 0; i--) {
+                bitsMatrix.get(y).set(i, isAdjacent(y, i));
+            }
+        }
+        return bitsMatrix;
     }
 
-    public void setAdjacencyMatrix(ArrayList<ArrayList<Boolean>> adjacencyMatrix) {
-        this.adjacencyMatrix = adjacencyMatrix;
+    /**
+     * Test if v1 has a direct connection to v2.
+     *
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public boolean isAdjacent(Vertex v1, Vertex v2) {
+        return isAdjacent(v1.getId(), v2.getId());
+    }
+
+    /**
+     * Test if v1.getId() has a direct connect to v2.getId()
+     *
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public boolean isAdjacent(int v1, int v2) {
+        return (adjacencyMatrix.get(v1) & 0x1 << v2) != 0;
     }
 
 
@@ -99,9 +146,10 @@ public class PlannerGraph {
 
     public Edge createEdge(Vertex v1, Vertex v2) throws  Exception {
         Edge e = EdgeFactory.createEdge(v1, v2);
-        e.adjacentNodes(getAdjacencyMatrix(), v1);
+        e.adjacentNodes(adjacencyMatrix);
 
         return e;
     }
+
 
 }

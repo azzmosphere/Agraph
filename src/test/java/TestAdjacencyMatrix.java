@@ -16,11 +16,14 @@ public class TestAdjacencyMatrix {
 
     /*
      * The graph that this is testing should be something like this:
-     *     1  2  3  4
-     *  1 v1-------v4
-     *  2  |       |
-     *  3  |       |
-     *  4 V2-------v3
+     *     1     2     3    4
+     *  1 v1--------------->v4
+     *     ^  \             |
+     *  2  |      \         |
+     *     |        \       |
+     *  3  |           \    |
+     *     |               \V
+     *  4 V2<---------------v3
      */
     @Test
     public void shouldCreateCorrectAdjencyMatrix() throws Exception {
@@ -32,11 +35,11 @@ public class TestAdjacencyMatrix {
         Vertex v3 = pg.attachVertex(data, 4, 4);
         Vertex v4 = pg.attachVertex(data, 1, 4);
 
-        pg.createEdge(v1, v2); //e1
-        pg.createEdge(v2, v3); //e2
+        pg.createEdge(v1, v4); //e1
+        pg.createEdge(v4, v3); //e2
         pg.createEdge(v3, v1); //e3
-        pg.createEdge(v3, v4); //e4
-        pg.createEdge(v4, v1); //e5
+        pg.createEdge(v3, v2); //e4
+        pg.createEdge(v2, v1); //e5
 
         ArrayList<ArrayList<Boolean>> adjacentMatrix = pg.getAdjacencyMatrix();
 
@@ -47,6 +50,7 @@ public class TestAdjacencyMatrix {
          * [true, true, false, true]
          * [true, false, true, false]
          */
+
 
         // V1
         assertThat(adjacentMatrix.get(0).get(0), is(false));
@@ -76,7 +80,5 @@ public class TestAdjacencyMatrix {
             System.out.println(i);
         }
 
-        //long x = 0x1 << 4 - 1;
-        //System.out.println("x = " + x);
     }
 }
