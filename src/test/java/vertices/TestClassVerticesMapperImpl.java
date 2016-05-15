@@ -12,7 +12,7 @@ public class TestClassVerticesMapperImpl implements VerticesMapperInterface {
     public enum VerticesMapper implements VerticesMapperInterface {
 
         /* default object */
-        TEST_VERTEX_2D_STRUCT{
+        TEST_VERTEX_2D_STRUCT {
             @Override
             public String toString() {
                 return GenericVertex2DStructure.class.getCanonicalName();
@@ -26,7 +26,7 @@ public class TestClassVerticesMapperImpl implements VerticesMapperInterface {
             }
         },
 
-        TEST_VERTEX_3D_STRUCT{
+        TEST_VERTEX_3D_STRUCT {
             @Override
             public String toString() {
                 return GenericVertex3DStructure.class.getCanonicalName();
