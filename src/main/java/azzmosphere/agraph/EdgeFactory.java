@@ -1,6 +1,6 @@
 package azzmosphere.agraph;
 
-import azzmosphere.agraph.vertices.Vertex;
+import azzmosphere.agraph.vertices.VertexInterface;
 
 /**
  * Create a edge between two nodes.
@@ -8,7 +8,7 @@ import azzmosphere.agraph.vertices.Vertex;
  * Created by aaron.spiteri on 12/05/2016.
  */
 public class EdgeFactory {
-    public static Edge createEdge(Vertex v1, Vertex v2) {
+    public static Edge createEdge(VertexInterface v1, VertexInterface v2) {
         Edge e = new Edge();
 
         e.setTail(v1);

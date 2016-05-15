@@ -1,9 +1,12 @@
-package azzmosphere.agraph.datastructures;
+package datastructures;
 
 /**
- * Created by aaron.spiteri on 11/05/2016.
+ *
+ * Generic class used for testing.
+ *
+ * Created by aaron.spiteri on 15/05/2016.
  */
-public class UltraSonicSensor {
+public class GenericVertex3DStructure {
     Long epoch;
     Long invalue;
 

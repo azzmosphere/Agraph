@@ -1,12 +1,15 @@
-import azzmosphere.agraph.datastructures.UltraSonicSensor;
+import azzmosphere.agraph.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
-import azzmosphere.agraph.vertices.Vertex;
+import azzmosphere.agraph.vertices.VertexInterface;
+import datastructures.GenericVertex2DStructure;
 import org.junit.Test;
+import vertices.TestClassVerticesMapperImpl;
+
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static azzmosphere.agraph.VerticesFactory.createVertex;
+
 /**
  * Created by aaron.spiteri on 12/05/2016.
  *
@@ -28,13 +31,14 @@ public class TestAdjacencyMatrix {
     @Test
     public void shouldCreateCorrectAdjencyMatrix() throws Exception {
         PlannerGraph pg = new PlannerGraph();
-        UltraSonicSensor data = new UltraSonicSensor();
+        GenericVertex2DStructure data = new GenericVertex2DStructure();
+        VerticesFactory vf = new VerticesFactory(new TestClassVerticesMapperImpl());
 
         // Create two dimensional vertices.
-        Vertex v1 = pg.attachVertex(createVertex(data, 1, 1), "v1");
-        Vertex v2 = pg.attachVertex(createVertex(data, 4, 1), "v2");
-        Vertex v3 = pg.attachVertex(createVertex(data, 4, 4), "v3");
-        Vertex v4 = pg.attachVertex(createVertex(data, 1, 4), "v4");
+        VertexInterface v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1}), "v1");
+        VertexInterface v2 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1}), "v2");
+        VertexInterface v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4}), "v3");
+        VertexInterface v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4}), "v4");
 
         pg.createEdge(v1, v4); //e1
         pg.createEdge(v4, v3); //e2

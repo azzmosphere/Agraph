@@ -19,30 +19,6 @@ public interface VertexInterface<T, Y> extends Comparable<T> {
     ArrayList<Edge> getEdges();
 
     /**
-     * set position on axis X
-     * @param x
-     */
-    void setX(Coordinate x);
-
-    /**
-     * retrieve poisition on axis X
-     * @return x
-     */
-    Coordinate getX();
-
-    /**
-     * set position on axis Y
-     * @param y
-     */
-    void setY(Coordinate y);
-
-    /**
-     * retrieve position on axis Y
-     * @return
-     */
-    Coordinate getY();
-
-    /**
      * set the human name that identifies the vertex
      * @return
      */
@@ -94,9 +70,9 @@ public interface VertexInterface<T, Y> extends Comparable<T> {
     void setData(Y data);
 
     /**
-     * class name of the data stored on node.
+     * Sets the coordinates to use.
      *
-     * @return
+     * @param coordinates
      */
-    String getDataClass();
+    void setCoordinates(Coordinate[] coordinates);
 }

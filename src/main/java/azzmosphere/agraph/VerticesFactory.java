@@ -1,7 +1,7 @@
 package azzmosphere.agraph;
 
-import azzmosphere.agraph.vertices.Vertex;
-import azzmosphere.agraph.vertices.VerticesMapper;
+import azzmosphere.agraph.vertices.VertexInterface;
+import azzmosphere.agraph.vertices.VerticesMapperInterface;
 
 /**
  * Creates various types of Vertices.
@@ -10,31 +10,33 @@ import azzmosphere.agraph.vertices.VerticesMapper;
  */
 public final class VerticesFactory {
 
+    private VerticesMapperInterface mapper;
 
-    public static Vertex createVertex(Object o, int x, int y) throws Exception {
-        Vertex v = null;
+    public VerticesFactory(VerticesMapperInterface mapper) {
+        this.mapper = mapper;
+    }
 
-        for (VerticesMapper m : VerticesMapper.values()) {
-            if (m.toString().equals(o.getClass().getCanonicalName())) {
-                v = m.getVertex(o);
-            }
+    public VertexInterface createVertex(Object o, int[] coordinates) throws Exception {
+        VertexInterface v = mapper.getVertex(o);
+        Coordinate[] coordinatesOut = new Coordinate[coordinates.length];
+
+        for (int i = 0; i < coordinates.length; i++) {
+            coordinatesOut[i] = new Coordinate(i);
         }
 
-
-        v.setX(new Coordinate(x));
-        v.setY(new Coordinate(y));
+        v.setCoordinates(coordinatesOut);
         return v;
     }
 
-    public static Vertex createVertex(int id, Object o, int x, int y, String label) throws Exception {
-        Vertex v = createVertex(id, o, x, y);
+    public VertexInterface createVertex(int id, Object o, int[] coordinates, String label) throws Exception {
+        VertexInterface v = createVertex(id, o, coordinates);
 
         v.setLabel(label);
         return v;
     }
 
-    public static Vertex createVertex(int id, Object o, int x, int y) throws Exception {
-        Vertex v = createVertex(o, x, y);
+    public VertexInterface createVertex(int id, Object o, int[] coordinates) throws Exception {
+        VertexInterface v = createVertex(o, coordinates);
         v.setId(id);
         return v;
     }

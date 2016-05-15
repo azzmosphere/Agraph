@@ -5,7 +5,7 @@
  */
 
 import azzmosphere.agraph.Coordinate;
-import azzmosphere.agraph.vertices.Vertex;
+import azzmosphere.agraph.vertices.Vertex2D;
 import org.junit.Test;
 import java.util.TreeSet;
 
@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertTrue;
 
 public class TestVertex {
-    class TestVertexImp extends Vertex<Object> {
+    class TestVertexImp extends Vertex2D<Object> {
         TestVertexImp(int id, String label, int x, int y) {
             setId(id);
             setLabel(label);
@@ -30,11 +30,6 @@ public class TestVertex {
         @Override
         public void setData(Object data) {
 
-        }
-
-        @Override
-        public String getDataClass() {
-            return null;
         }
     }
 

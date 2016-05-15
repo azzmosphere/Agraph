@@ -1,6 +1,5 @@
 package azzmosphere.agraph.vertices;
 
-import azzmosphere.agraph.Coordinate;
 import azzmosphere.agraph.Edge;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
     private ArrayList<VertexInterface> adjacentNodes = new ArrayList<>();
     private ArrayList<Edge> edges = new ArrayList<>();
-    private Coordinate x, y;
     private String label;
     private int id;
 
@@ -27,25 +25,6 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
         return edges;
     }
 
-    @Override
-    public void setX(Coordinate x) {
-        this.x = x;
-    }
-
-    @Override
-    public Coordinate getX() {
-        return x;
-    }
-
-    @Override
-    public void setY(Coordinate y) {
-        this.y = y;
-    }
-
-    @Override
-    public Coordinate getY() {
-        return y;
-    }
 
     @Override
     public String getLabel() {
@@ -80,10 +59,6 @@ public abstract class Vertex<Y> implements VertexInterface<Vertex, Y> {
         return compareTo(v) == 0;
     }
 
-    @Override
-    public String toString() {
-        return label + "(" + x + "," + y + ")";
-    }
 
 
 }

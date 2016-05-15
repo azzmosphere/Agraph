@@ -1,7 +1,7 @@
 package azzmosphere.agraph.plane;
 
 import java.util.ArrayList;
-import azzmosphere.agraph.vertices.Vertex;
+import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.EdgeFactory;
 
@@ -56,7 +56,7 @@ public class PlannerGraph {
      * insertion operations done by the Edge class.
      */
     private ArrayList<Integer> adjacencyMatrix = new ArrayList<>();
-    private ArrayList<Vertex> vertices = new ArrayList<>();
+    private ArrayList<VertexInterface> vertices = new ArrayList<>();
 
 
     /*
@@ -110,7 +110,7 @@ public class PlannerGraph {
      * @param v2
      * @return
      */
-    public boolean isAdjacent(Vertex v1, Vertex v2) {
+    public boolean isAdjacent(VertexInterface v1, VertexInterface v2) {
         return isAdjacent(v1.getId(), v2.getId());
     }
 
@@ -133,13 +133,13 @@ public class PlannerGraph {
      * @return vertex after id assignment.
      * @throws Exception
      */
-    public Vertex attachVertex(Vertex v) throws Exception {
+    public VertexInterface attachVertex(VertexInterface v) throws Exception {
         v.setId(vertices.size());
         vertices.add(v);
         return v;
     }
 
-    public Vertex attachVertex(Vertex v, String label) throws Exception {
+    public VertexInterface attachVertex(VertexInterface v, String label) throws Exception {
         attachVertex(v);
         v.setLabel(label);
         return v;
@@ -153,7 +153,7 @@ public class PlannerGraph {
      * @return created edge
      * @throws Exception
      */
-    public Edge createEdge(Vertex v1, Vertex v2) throws  Exception {
+    public Edge createEdge(VertexInterface v1, VertexInterface v2) throws  Exception {
 
         Edge e = EdgeFactory.createEdge(v1, v2);
         e.adjacentNodes(adjacencyMatrix);

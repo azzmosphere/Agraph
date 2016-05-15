@@ -1,6 +1,7 @@
 package azzmosphere.agraph;
 
-import azzmosphere.agraph.vertices.Vertex;
+import azzmosphere.agraph.vertices.VertexInterface;
+
 import java.util.ArrayList;
 
 /**
@@ -9,23 +10,23 @@ import java.util.ArrayList;
  * Created by aaron.spiteri on 10/05/2016.
  */
 public class Edge {
-    private Vertex tail;
-    private Vertex head;
+    private VertexInterface tail;
+    private VertexInterface head;
     private String label;
 
-    public Vertex getTail() {
+    public VertexInterface getTail() {
         return tail;
     }
 
-    public void setTail(Vertex tail) {
+    public void setTail(VertexInterface tail) {
         this.tail = tail;
     }
 
-    public Vertex getHead() {
+    public VertexInterface getHead() {
         return head;
     }
 
-    public void setHead(Vertex head) {
+    public void setHead(VertexInterface head) {
         this.head = head;
     }
 
@@ -45,7 +46,7 @@ public class Edge {
      */
     public ArrayList<Integer> adjacentNodes(ArrayList<Integer> adjacentNodeMatrix) {
 
-        Vertex v = getTail();
+        VertexInterface v = getTail();
         int id = v.getId();
         ArrayList<Edge> edges = v.getEdges();
         createSlots(id, adjacentNodeMatrix);
