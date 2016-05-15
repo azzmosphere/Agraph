@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-
+import static azzmosphere.agraph.VerticesFactory.createVertex;
 /**
  * Created by aaron.spiteri on 12/05/2016.
  *
@@ -30,10 +30,11 @@ public class TestAdjacencyMatrix {
         PlannerGraph pg = new PlannerGraph();
         UltraSonicSensor data = new UltraSonicSensor();
 
-        Vertex v1 = pg.attachVertex(data, 1, 1);
-        Vertex v2 = pg.attachVertex(data, 4, 1);
-        Vertex v3 = pg.attachVertex(data, 4, 4);
-        Vertex v4 = pg.attachVertex(data, 1, 4);
+        // Create two dimensional vertices.
+        Vertex v1 = pg.attachVertex(createVertex(data, 1, 1), "v1");
+        Vertex v2 = pg.attachVertex(createVertex(data, 4, 1), "v2");
+        Vertex v3 = pg.attachVertex(createVertex(data, 4, 4), "v3");
+        Vertex v4 = pg.attachVertex(createVertex(data, 1, 4), "v4");
 
         pg.createEdge(v1, v4); //e1
         pg.createEdge(v4, v3); //e2

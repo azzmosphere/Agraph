@@ -2,7 +2,6 @@ package azzmosphere.agraph.plane;
 
 import java.util.ArrayList;
 import azzmosphere.agraph.vertices.Vertex;
-import azzmosphere.agraph.VerticesFactory;
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.EdgeFactory;
 
@@ -128,23 +127,34 @@ public class PlannerGraph {
 
 
     /**
-     * attaches vertex to graph. The vertex remains unattached to any other vertices until a edge is created. It is
-     * therefore better to call this method should not be callled directly for planner graphs and is only included
-     * to meet interface requirements for other graph types that allow for unattached node.
+     * Adds a vertex to the graph
      *
-     * @param data
-     * @param x
-     * @param y
-     * @return
+     * @param v vertex to attach
+     * @return vertex after id assignment.
      * @throws Exception
      */
-    public Vertex attachVertex(Object data, int x, int y) throws Exception {
-        Vertex v = VerticesFactory.createVertex(vertices.size(), data, x, y);
+    public Vertex attachVertex(Vertex v) throws Exception {
+        v.setId(vertices.size());
         vertices.add(v);
         return v;
     }
 
+    public Vertex attachVertex(Vertex v, String label) throws Exception {
+        attachVertex(v);
+        v.setLabel(label);
+        return v;
+    }
+
+    /**
+     * Creates a edge on the graph.
+     *
+     * @param v1 head vertex
+     * @param v2 tail vertex
+     * @return created edge
+     * @throws Exception
+     */
     public Edge createEdge(Vertex v1, Vertex v2) throws  Exception {
+
         Edge e = EdgeFactory.createEdge(v1, v2);
         e.adjacentNodes(adjacencyMatrix);
 

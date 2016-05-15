@@ -11,7 +11,7 @@ import azzmosphere.agraph.vertices.VerticesMapper;
 public final class VerticesFactory {
 
 
-    public static Vertex createVertex(int id, Object o, int x, int y) throws Exception {
+    public static Vertex createVertex(Object o, int x, int y) throws Exception {
         Vertex v = null;
 
         for (VerticesMapper m : VerticesMapper.values()) {
@@ -20,7 +20,7 @@ public final class VerticesFactory {
             }
         }
 
-        v.setId(id);
+
         v.setX(new Coordinate(x));
         v.setY(new Coordinate(y));
         return v;
@@ -28,7 +28,14 @@ public final class VerticesFactory {
 
     public static Vertex createVertex(int id, Object o, int x, int y, String label) throws Exception {
         Vertex v = createVertex(id, o, x, y);
+
         v.setLabel(label);
+        return v;
+    }
+
+    public static Vertex createVertex(int id, Object o, int x, int y) throws Exception {
+        Vertex v = createVertex(o, x, y);
+        v.setId(id);
         return v;
     }
 }
