@@ -1,6 +1,9 @@
 package azzmosphere.agraph.plane;
 
 import java.util.ArrayList;
+
+import azzmosphere.agraph.face.FaceInterface;
+import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.EdgeFactory;
@@ -57,7 +60,12 @@ public class PlannerGraph {
      */
     private ArrayList<Integer> adjacencyMatrix = new ArrayList<>();
     private ArrayList<VertexInterface> vertices = new ArrayList<>();
+    private ArrayList<Edge> edges = new ArrayList<>();
+    private TranverserInterface transverser;
 
+    public PlannerGraph(TranverserInterface transverser) {
+        this.transverser = transverser;
+    }
 
     /*
      * A planner graph should comply Euler rule which states:
@@ -103,6 +111,11 @@ public class PlannerGraph {
         return bitsMatrix;
     }
 
+    public ArrayList<Integer> getAdjacencyMatrixSimple() {
+        return this.adjacencyMatrix;
+    }
+
+
     /**
      * Test if v1 has a direct connection to v2.
      *
@@ -122,7 +135,7 @@ public class PlannerGraph {
      * @return
      */
     public boolean isAdjacent(int v1, int v2) {
-        return (adjacencyMatrix.get(v1) & 0x1 << v2) != 0;
+        return GraphUtils.isAdjacent(v1, v2, adjacencyMatrix);
     }
 
 
@@ -157,9 +170,25 @@ public class PlannerGraph {
 
         Edge e = EdgeFactory.createEdge(v1, v2);
         e.adjacentNodes(adjacencyMatrix);
+        e.setId(edges.size());
+        edges.add(e);
 
         return e;
     }
 
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
 
+    public TranverserInterface getTransverser() {
+        return transverser;
+    }
+
+    public ArrayList<FaceInterface> findFacesForVertex(VertexInterface v) {
+        return transverser.findFacesForVertex(v,vertices,adjacencyMatrix);
+    }
+
+    public ArrayList<VertexInterface> getVertices() {
+        return vertices;
+    }
 }

@@ -4,6 +4,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
 import datastructures.GenericVertex2DStructure;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
+import azzmosphere.agraph.tranverser.DFS;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class TestAdjacencyMatrix {
      */
     @Test
     public void shouldCreateCorrectAdjencyMatrix() throws Exception {
-        PlannerGraph pg = new PlannerGraph();
+        PlannerGraph pg = new PlannerGraph(new DFS());
         GenericVertex2DStructure data = new GenericVertex2DStructure();
         VerticesFactory vf = new VerticesFactory(new TestClassVerticesMapperImpl());
 
@@ -85,5 +86,8 @@ public class TestAdjacencyMatrix {
             System.out.println(i);
         }
 
+        System.out.println(3 & 4);
+
     }
+
 }

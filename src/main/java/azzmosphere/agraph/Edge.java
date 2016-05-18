@@ -1,5 +1,7 @@
 package azzmosphere.agraph;
 
+import azzmosphere.agraph.plane.GraphUtils;
+import azzmosphere.agraph.vertices.Vertex;
 import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
@@ -9,10 +11,19 @@ import java.util.ArrayList;
  *
  * Created by aaron.spiteri on 10/05/2016.
  */
-public class Edge {
+public class Edge implements Comparable<Edge> {
     private VertexInterface tail;
     private VertexInterface head;
     private String label;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public VertexInterface getTail() {
         return tail;
@@ -55,12 +66,12 @@ public class Edge {
             int eId = e.getHead().getId();
 
             int innerSlots = adjacentNodeMatrix.get(id);
-            innerSlots = 0x1 << eId | innerSlots;
+            innerSlots = GraphUtils.markVertex(eId, innerSlots);
             adjacentNodeMatrix.set(id, innerSlots);
 
             createSlots(eId, adjacentNodeMatrix);
             innerSlots = adjacentNodeMatrix.get(eId);
-            innerSlots = 0x1 << id | innerSlots;
+            innerSlots = GraphUtils.markVertex(id, innerSlots);
             adjacentNodeMatrix.set(eId, innerSlots);
         }
         return adjacentNodeMatrix;
@@ -74,8 +85,39 @@ public class Edge {
         if (adjacentNodeMatrix.size() <= id) {
             for (int n = adjacentNodeMatrix.size(); n < (id + 1); n++) {
                 adjacentNodeMatrix.add(0);
-
             }
         }
+    }
+
+    public boolean containsNodes(VertexInterface v1, VertexInterface v2) {
+
+        if (getHead().isEqual(v1) && getTail().isEqual(v2)) {
+            return true;
+        }
+        if (getTail().isEqual(v1) && getHead().isEqual(v2)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+
+        if (containsNodes(o.getHead(), o.getTail())) {
+            return 0;
+        }
+        else if (getHead().getId() != o.getHead().getId()) {
+            return getHead().getId() - o.getHead().getId();
+        }
+        return 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Edge compareTo = (Edge) o;
+        if (compareTo(compareTo) == 0) {
+            return true;
+        }
+        return false;
     }
 }

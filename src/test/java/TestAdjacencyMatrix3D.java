@@ -1,7 +1,10 @@
 import azzmosphere.agraph.VerticesFactory;
+import azzmosphere.agraph.face.FaceInterface;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.vertices.VertexInterface;
 import datastructures.GenericVertex3DStructure;
+import azzmosphere.agraph.tranverser.DFS;
+import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
 import java.util.ArrayList;
@@ -11,74 +14,90 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by aaron.spiteri on 15/05/2016.
+ *
+ * The graph that this is testing should be something like this:
+ *
+ *           v5--------------->v6
+ *         3 /              /  |
+ *       2 /               /   |
+ *     1 /   2     3    4 /    |
+ *  1 v1--------------->v4     | v7   (v8: is the intersection of v2 -> v8,  v8 -> v5,  v7 ->v8)
+ *     ^                |     /
+ *  2  |                |    /
+ *     |                |   /
+ *  3  |                |  /
+ *     |                V/
+ *  4 V2<---------------v3
+ *
+ * The aim here is to graph a cube.
  */
+
 public class TestAdjacencyMatrix3D {
+    private PlannerGraph pg;
+    private GenericVertex3DStructure data = new GenericVertex3DStructure();
+    private VerticesFactory vf = new VerticesFactory(new TestClassVerticesMapperImpl());
+
+    // Create three dimensional vertices.
+    VertexInterface v1;
+    VertexInterface v2;
+    VertexInterface v3;
+    VertexInterface v4;
+    VertexInterface v5;
+    VertexInterface v6;
+    VertexInterface v7;
+    VertexInterface v8;
+
+    @Before
+    public void initialize() throws Exception {
+        pg = new PlannerGraph(new DFS());
+
+
+        // Create three dimensional vertices.
+        v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1");
+        v2 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 1}), "v2");
+        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 1}), "v3");
+        v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 1}), "v4");
+        v5 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 4}), "v5");
+        v6 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 4}), "v6");
+        v7 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 4}), "v7");
+        v8 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 4}), "v8");
+
+        pg.createEdge(v1, v4); // e1
+        pg.createEdge(v1, v5); // e2
+
+        pg.createEdge(v2, v1); // e3
+        pg.createEdge(v2, v8); // e4
+
+        pg.createEdge(v3, v2); // e5
+        pg.createEdge(v3, v7); // e6
+
+        pg.createEdge(v4, v6); // e7
+        pg.createEdge(v4, v3); // e8
+
+        pg.createEdge(v5, v6); // e9
+
+        pg.createEdge(v6, v7); // e10
+
+        pg.createEdge(v7, v8); // e11
+
+        pg.createEdge(v8, v5); // e12
+    }
+
+
     /*
-     * The graph that this is testing should be something like this:
-     *
-     *           v5--------------->v6
-     *         3 /              /  |
-     *       2 /               /   |
-     *     1 /   2     3    4 /    |
-     *  1 v1--------------->v4     | v7   (v8: is the intersection of v2 -> v8,  v8 -> v5,  v7 ->v8)
-     *     ^                |     /
-     *  2  |                |    /
-     *     |                |   /
-     *  3  |                |  /
-     *     |                V/
-     *  4 V2<---------------v3
-     *
-     * The aim here is to graph a cube.
+     * Adjacency matrix should look like this:
+     *   [false, true, false, true, true,  false, false, false]
+     *   [true, false, true, false, false, false, false, true]
+     *   [false,true, false, true,  false, false, true,  false]
+     *   [true, false, true, false, false, true,  false, false]
+     *   [true, false, false, false, false, true, false, true]
+     *   [false, false, false, true, true,  false, true, false]
+     *   [false, false, true, false, false, true, false, true]
+     *   [false, true,  false,false, true,  false, true, false]
      */
 
     @Test
     public void shouldCreateCorrectAdjacencyMatrix() throws Exception {
-        PlannerGraph pg = new PlannerGraph();
-        GenericVertex3DStructure data = new GenericVertex3DStructure();
-        VerticesFactory vf = new VerticesFactory(new TestClassVerticesMapperImpl());
-
-        // Create three dimensional vertices.
-        VertexInterface v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1");
-        VertexInterface v2 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 1}), "v2");
-        VertexInterface v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 1}), "v3");
-        VertexInterface v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 1}), "v4");
-        VertexInterface v5 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 4}), "v5");
-        VertexInterface v6 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 4}), "v6");
-        VertexInterface v7 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 4}), "v7");
-        VertexInterface v8 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 4}), "v8");
-
-                /*
-         * Adjacency matrix should look like this:
-         *   [false, true, false, true, true,  false, false, false]
-         *   [true, false, true, false, false, false, false, true]
-         *   [false,true, false, true,  false, false, true,  false]
-         *   [true, false, true, false, false, true,  false, false]
-         *   [true, false, false, false, false, true, false, true]
-         *   [false, false, false, true, true,  false, true, false]
-         *   [false, false, true, false, false, true, false, true]
-         *   [false, true,  false,false, true,  false, true, false]
-         */
-
-        pg.createEdge(v1, v4);
-        pg.createEdge(v1, v5);
-
-        pg.createEdge(v2, v1);
-        pg.createEdge(v2, v8);
-
-        pg.createEdge(v3, v2);
-        pg.createEdge(v3, v7);
-
-        pg.createEdge(v4, v6);
-        pg.createEdge(v4, v3);
-
-        pg.createEdge(v5, v6);
-
-        pg.createEdge(v6, v7);
-
-        pg.createEdge(v7, v8);
-
-        pg.createEdge(v8, v5);
-
 
 
         ArrayList<ArrayList<Boolean>> adjacentMatrix = pg.getAdjacencyMatrix();
@@ -164,6 +183,15 @@ public class TestAdjacencyMatrix3D {
 
         for (ArrayList<Boolean> i : adjacentMatrix) {
             System.out.println(i);
+        }
+    }
+
+    @Test
+    public void shouldFind3Faces() throws Exception {
+        ArrayList<FaceInterface> faces = pg.findFacesForVertex(v1);
+
+        for (FaceInterface f : faces) {
+            System.out.println(f);
         }
     }
 }
