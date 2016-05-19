@@ -1,9 +1,8 @@
-package azzmosphere.agraph.face;
+package azzmosphere.agraph.subgraph;
 
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.vertices.VertexInterface;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 /**
@@ -28,7 +27,7 @@ import java.util.LinkedHashSet;
  * Created by aaron.spiteri on 16/05/2016.
  */
 
-public class SimpleCycle implements  FaceInterface {
+public class SimpleCycle implements SubgraphInterface {
     private LinkedHashSet<VertexInterface> vertices = new LinkedHashSet<>();
     private LinkedHashSet<Edge> edges = new LinkedHashSet<>();
 

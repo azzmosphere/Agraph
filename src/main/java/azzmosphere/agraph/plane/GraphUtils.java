@@ -49,4 +49,18 @@ public class GraphUtils {
     public static boolean isMarked(int id, int adjacentVertices) {
         return (adjacentVertices & 0x1 << id) != 0;
     }
+
+
+    /**
+     *
+     * Use Eular's formula to determine if a graph is a polyhedron.
+     *
+     * @param v vertices count
+     * @param e edges count
+     * @param f faces count
+     * @return true if the graph is a polyhedrun otherwise return false.
+     */
+    public static boolean isPolyhedron(int v, int e, int f) {
+        return ((v - e + f) == 2);
+    }
 }

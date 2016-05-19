@@ -1,7 +1,6 @@
 package azzmosphere.agraph;
 
 import azzmosphere.agraph.plane.GraphUtils;
-import azzmosphere.agraph.vertices.Vertex;
 import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
@@ -119,5 +118,15 @@ public class Edge implements Comparable<Edge> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getLabel() + "(" + getHead() + ", " + getTail() + ")";
     }
 }

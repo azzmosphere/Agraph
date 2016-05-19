@@ -1,4 +1,5 @@
-import azzmosphere.agraph.tranverser.DFS;
+import azzmosphere.agraph.subgraph.SubgraphMapperImp;
+import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.plane.PlannerGraph;
@@ -22,7 +23,7 @@ public class TestEdge {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new DFS());
+        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
 
         v1 = pg.attachVertex(new TestClassForVertex2D());
         v2 = pg.attachVertex(new TestClassForVertex2D());

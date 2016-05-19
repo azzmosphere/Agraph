@@ -2,11 +2,12 @@ package azzmosphere.agraph.plane;
 
 import java.util.ArrayList;
 
-import azzmosphere.agraph.face.FaceInterface;
+import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.EdgeFactory;
+import java.util.LinkedHashSet;
 
 /**
  * Created by aaron.spiteri on 12/05/2016.
@@ -65,6 +66,9 @@ public class PlannerGraph {
 
     public PlannerGraph(TranverserInterface transverser) {
         this.transverser = transverser;
+        this.transverser.setAdjacencyMatrix(adjacencyMatrix);
+        this.transverser.setEdges(edges);
+        this.transverser.setVertices(vertices);
     }
 
     /*
@@ -176,6 +180,12 @@ public class PlannerGraph {
         return e;
     }
 
+    public Edge createEdge(VertexInterface v1, VertexInterface v2, String label) throws Exception {
+        Edge e = createEdge(v1, v2);
+        e.setLabel(label);
+        return e;
+    }
+
     public ArrayList<Edge> getEdges() {
         return edges;
     }
@@ -184,8 +194,8 @@ public class PlannerGraph {
         return transverser;
     }
 
-    public ArrayList<FaceInterface> findFacesForVertex(VertexInterface v) {
-        return transverser.findFacesForVertex(v,vertices,adjacencyMatrix);
+    public LinkedHashSet<SubgraphInterface> findFacesForVertex(VertexInterface v) {
+        return transverser.findAllSubgraphs(v);
     }
 
     public ArrayList<VertexInterface> getVertices() {

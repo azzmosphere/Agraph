@@ -1,9 +1,9 @@
 import azzmosphere.agraph.VerticesFactory;
-import azzmosphere.agraph.face.FaceInterface;
 import azzmosphere.agraph.plane.PlannerGraph;
+import azzmosphere.agraph.subgraph.SubgraphMapperImp;
+import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.vertices.VertexInterface;
 import datastructures.GenericVertex3DStructure;
-import azzmosphere.agraph.tranverser.DFS;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
@@ -49,7 +49,7 @@ public class TestAdjacencyMatrix3D {
 
     @Before
     public void initialize() throws Exception {
-        pg = new PlannerGraph(new DFS());
+        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
 
 
         // Create three dimensional vertices.
@@ -183,15 +183,6 @@ public class TestAdjacencyMatrix3D {
 
         for (ArrayList<Boolean> i : adjacentMatrix) {
             System.out.println(i);
-        }
-    }
-
-    @Test
-    public void shouldFind3Faces() throws Exception {
-        ArrayList<FaceInterface> faces = pg.findFacesForVertex(v1);
-
-        for (FaceInterface f : faces) {
-            System.out.println(f);
         }
     }
 }

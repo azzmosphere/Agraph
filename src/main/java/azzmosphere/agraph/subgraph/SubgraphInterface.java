@@ -1,4 +1,4 @@
-package azzmosphere.agraph.face;
+package azzmosphere.agraph.subgraph;
 
 import azzmosphere.agraph.Edge;
 import azzmosphere.agraph.vertices.VertexInterface;
@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
  *
  * Created by aaron.spiteri on 16/05/2016.
  */
-public interface FaceInterface {
+public interface SubgraphInterface {
 
     LinkedHashSet<VertexInterface> getVertices();
     LinkedHashSet<Edge> getEdges();
