@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
-import azzmosphere.agraph.Edge;
-import azzmosphere.agraph.EdgeFactory;
+import azzmosphere.agraph.edge.Edge;
+import azzmosphere.agraph.edge.EdgeFactory;
 import java.util.LinkedHashSet;
 
 /**
@@ -185,6 +185,14 @@ public class PlannerGraph {
         e.setLabel(label);
         return e;
     }
+
+    public Edge createEdge(VertexInterface v1, VertexInterface v2, String label, Edge.Axis joiningAxis) throws Exception {
+        Edge e = createEdge(v1, v2);
+        e.setLabel(label);
+        e.setJoiningAxis(joiningAxis);
+        return e;
+    }
+
 
     public ArrayList<Edge> getEdges() {
         return edges;

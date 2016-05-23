@@ -1,4 +1,4 @@
-package azzmosphere.agraph;
+package azzmosphere.agraph.edge;
 
 import azzmosphere.agraph.vertices.VertexInterface;
 

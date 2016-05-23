@@ -1,6 +1,6 @@
 package azzmosphere.agraph.vertices;
 
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 
 import java.util.ArrayList;
 

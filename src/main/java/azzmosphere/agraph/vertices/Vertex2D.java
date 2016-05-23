@@ -35,4 +35,9 @@ public abstract class Vertex2D<Y> extends Vertex<Y>  {
     public String toString() {
         return getLabel() + "(" + x + "," + y + ")";
     }
+
+    @Override
+    public Coordinate[] getCoordinates() {
+        return new Coordinate[] {x, y};
+    }
 }

@@ -1,5 +1,6 @@
-package azzmosphere.agraph;
+package azzmosphere.agraph.edge;
 
+import azzmosphere.agraph.Coordinate;
 import azzmosphere.agraph.plane.GraphUtils;
 import azzmosphere.agraph.vertices.VertexInterface;
 
@@ -11,10 +12,19 @@ import java.util.ArrayList;
  * Created by aaron.spiteri on 10/05/2016.
  */
 public class Edge implements Comparable<Edge> {
+
+    public enum Axis {
+        XAXIS,
+        YAXIS,
+        ZAXIS;
+    }
+
     private VertexInterface tail;
     private VertexInterface head;
     private String label;
     private int id;
+    private double length;
+    private Axis joiningAxis;
 
     public int getId() {
         return id;
@@ -97,6 +107,56 @@ public class Edge implements Comparable<Edge> {
             return true;
         }
         return false;
+    }
+
+    /**
+     * The length of the edge in units.
+     *
+     * @return length of edge.
+     */
+    public double getLength() {
+        return length;
+    }
+
+    /**
+     * Which axis that the vetices head and tail are joined on.
+     *
+     * @return the axis that v1 and v2 are joined on.
+     */
+    public Axis getJoiningAxis() {
+        return joiningAxis;
+    }
+
+    /**
+     * set the axis that v1 and v2 are to be joined on,
+     * this will also calculate the length of the edge.
+     *
+     * @param joiningAxis
+     */
+    public void setJoiningAxis(Axis joiningAxis) {
+        this.joiningAxis = joiningAxis;
+        Coordinate[] coordinatesV1 = getHead().getCoordinates();
+        Coordinate[] coordinatesV2 = getTail().getCoordinates();
+
+        int axis = 0;
+        switch (joiningAxis) {
+            case XAXIS:
+                axis = 0;
+                break;
+            case YAXIS:
+                axis = 1;
+                break;
+            case ZAXIS:
+                axis = 2;
+                break;
+            default:
+                axis = 0;
+        }
+        int length = coordinatesV1[axis].getCoordinate() - coordinatesV2[axis].getCoordinate();
+        if (length < 0) {
+            length = length * -1;
+        }
+        this.length = length;
     }
 
     @Override

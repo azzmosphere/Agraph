@@ -1,11 +1,11 @@
-import azzmosphere.agraph.VerticesFactory;
+import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
 import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,6 @@
-package azzmosphere.agraph;
+package azzmosphere.agraph.vertices;
 
-import azzmosphere.agraph.vertices.VertexInterface;
-import azzmosphere.agraph.vertices.VerticesMapperInterface;
+import azzmosphere.agraph.Coordinate;
 
 /**
  * Creates various types of Vertices.
@@ -21,7 +20,7 @@ public final class VerticesFactory {
         Coordinate[] coordinatesOut = new Coordinate[coordinates.length];
 
         for (int i = 0; i < coordinates.length; i++) {
-            coordinatesOut[i] = new Coordinate(i);
+            coordinatesOut[i] = new Coordinate(coordinates[i]);
         }
 
         v.setCoordinates(coordinatesOut);

@@ -1,6 +1,6 @@
 package azzmosphere.agraph.tranverser;
 
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 

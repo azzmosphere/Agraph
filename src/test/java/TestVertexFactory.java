@@ -1,4 +1,4 @@
-import azzmosphere.agraph.VerticesFactory;
+import azzmosphere.agraph.vertices.VerticesFactory;
 
 
 import azzmosphere.agraph.vertices.VertexInterface;

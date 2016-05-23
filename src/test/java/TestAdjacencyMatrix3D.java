@@ -1,4 +1,4 @@
-import azzmosphere.agraph.VerticesFactory;
+import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
 import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;

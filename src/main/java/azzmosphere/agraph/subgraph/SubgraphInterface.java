@@ -1,6 +1,6 @@
 package azzmosphere.agraph.subgraph;
 
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.vertices.VertexInterface;
 import java.util.LinkedHashSet;
 

@@ -47,4 +47,9 @@ public abstract class Vertex3D<Y> extends  Vertex<Y> {
     public String toString() {
         return getLabel() + "(" + x + "," + y + "," + z + ")";
     }
+
+    @Override
+    public Coordinate[] getCoordinates() {
+        return new Coordinate[] {x, y, z};
+    }
 }

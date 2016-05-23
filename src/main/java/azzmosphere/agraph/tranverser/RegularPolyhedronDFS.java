@@ -1,6 +1,6 @@
 package azzmosphere.agraph.tranverser;
 
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperInterface;
 import azzmosphere.agraph.plane.GraphUtils;
@@ -96,6 +96,7 @@ public class RegularPolyhedronDFS implements TranverserInterface {
     @Override
     public LinkedHashSet<SubgraphInterface> findAllSubgraphs() {
         int discoveredVertices = 0;
+        int discoveredEdges = 0;
         boolean allVerticesDiscovered = false;
         LinkedHashSet<SubgraphInterface> faces = new LinkedHashSet<>();
 
@@ -109,6 +110,10 @@ public class RegularPolyhedronDFS implements TranverserInterface {
                     for (SubgraphInterface f : newFaces) {
                         for (VertexInterface discoveredNode : f.getVertices()) {
                             discoveredVertices = GraphUtils.markVertex(discoveredNode.getId(), discoveredVertices);
+                        }
+
+                        for (Edge discoveredEdge : f.getEdges()) {
+                            discoveredEdges = GraphUtils.markVertex(discoveredEdge.getId(), discoveredEdges);
                         }
                     }
 

@@ -2,7 +2,7 @@ package azzmosphere.agraph.vertices;
 
 
 import azzmosphere.agraph.Coordinate;
-import azzmosphere.agraph.Edge;
+import azzmosphere.agraph.edge.Edge;
 
 import java.util.ArrayList;
 
@@ -75,4 +75,6 @@ public interface VertexInterface<T, Y> extends Comparable<T> {
      * @param coordinates
      */
     void setCoordinates(Coordinate[] coordinates);
+
+    Coordinate[] getCoordinates();
 }
