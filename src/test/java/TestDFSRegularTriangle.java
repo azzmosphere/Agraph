@@ -2,8 +2,8 @@ import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
-import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.vertices.VertexInterface;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import azzmosphere.agraph.edge.Edge;
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
@@ -12,8 +12,8 @@ import vertices.TestClassVerticesMapperImpl;
 
 import java.util.LinkedHashSet;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+//import static org.hamcrest.CoreMatchers.is;
+//import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  *
@@ -68,22 +68,22 @@ public class TestDFSRegularTriangle {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
-        v1 = pg.attachVertex(vf.createVertex(data, new int[]{0,0,0}), "v1");
-        v2 = pg.attachVertex(vf.createVertex(data, new int[]{2,4,2}), "v2");
-        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4,0,0}), "v3");
-        v4 = pg.attachVertex(vf.createVertex(data, new int[]{2,2,4}), "v4");
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        v1 = pg.attachVertex(vf.createVertex(data, new int[]{0, 0, 0}), "v1");
+        v2 = pg.attachVertex(vf.createVertex(data, new int[]{2, 4, 2}), "v2");
+        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 0, 0}), "v3");
+        v4 = pg.attachVertex(vf.createVertex(data, new int[]{2, 2, 4}), "v4");
 
-        e1 = pg.createEdge(v1, v3, "e1");
-        e2 = pg.createEdge(v3, v2, "e2");
-        e3 = pg.createEdge(v1, v2, "e3");
-        e4 = pg.createEdge(v1, v4, "e4");
-        e5 = pg.createEdge(v3, v4, "e5");
-        e6 = pg.createEdge(v4, v2, "e2");
+        e1 = pg.createEdge(v1, v3, "e1", Edge.Axis.XAXIS);
+        e2 = pg.createEdge(v3, v2, "e2", Edge.Axis.YAXIS);
+        e3 = pg.createEdge(v1, v2, "e3", Edge.Axis.XAXIS);
+        e4 = pg.createEdge(v1, v4, "e4", Edge.Axis.ZAXIS);
+        e5 = pg.createEdge(v3, v4, "e5", Edge.Axis.ZAXIS);
+        e6 = pg.createEdge(v4, v2, "e2", Edge.Axis.YAXIS);
     }
 
     @Test
-    public void shouldBeBalances() {
+    public void shouldBeBalances() throws Exception {
 
         pg.getTransverser().isBalanced();
 

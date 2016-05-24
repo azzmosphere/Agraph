@@ -202,7 +202,7 @@ public class PlannerGraph {
         return transverser;
     }
 
-    public LinkedHashSet<SubgraphInterface> findFacesForVertex(VertexInterface v) {
+    public LinkedHashSet<SubgraphInterface> findFacesForVertex(VertexInterface v) throws Exception {
         return transverser.findAllSubgraphs(v);
     }
 

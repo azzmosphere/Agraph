@@ -1,12 +1,12 @@
 package vertices;
 
-import azzmosphere.agraph.vertices.Vertex2D;
 import datastructures.GenericVertex3DStructure;
+import azzmosphere.agraph.vertices.Vertex3D;
 
 /**
  * Created by aaron.spiteri on 11/05/2016.
  */
-public class TestClassForVertex3D extends Vertex2D<GenericVertex3DStructure> {
+public class TestClassForVertex3D extends Vertex3D<GenericVertex3DStructure> {
     private GenericVertex3DStructure data;
 
     @Override

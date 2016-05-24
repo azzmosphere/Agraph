@@ -1,16 +1,15 @@
 import azzmosphere.agraph.edge.EdgeUtil;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
-import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.plane.PlannerGraph;
-
 import azzmosphere.agraph.vertices.VerticesFactory;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
+
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassForVertex2D;
-import vertices.TestClassForVertex3D;
 import vertices.TestClassVerticesMapperImpl;
 
 import static org.junit.Assert.assertThat;
@@ -31,7 +30,7 @@ public class TestEdge {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
 
         v1 = pg.attachVertex(new TestClassForVertex2D());
         v2 = pg.attachVertex(new TestClassForVertex2D());
@@ -59,10 +58,10 @@ public class TestEdge {
     public void shouldFindAngle() throws Exception {
         GenericVertex3DStructure data = new GenericVertex3DStructure();
 
-        VertexInterface v1 = vf.createVertex(data, new int[]{1,1,1});
-        VertexInterface v2 = vf.createVertex(data, new int[]{4,1,1});
-        VertexInterface v3 = vf.createVertex(data, new int[]{4,4,1});
-        VertexInterface v4 = vf.createVertex(data, new int[]{1,4,1});
+        VertexInterface v1 = vf.createVertex(data, new int[]{1, 1, 1});
+        VertexInterface v2 = vf.createVertex(data, new int[]{4, 1, 1});
+        VertexInterface v3 = vf.createVertex(data, new int[]{4, 4, 1});
+        VertexInterface v4 = vf.createVertex(data, new int[]{1, 4, 1});
 
         v1.setId(0);
         v2.setId(1);

@@ -1,8 +1,10 @@
 package azzmosphere.agraph.tranverser;
 
 import azzmosphere.agraph.edge.Edge;
+import azzmosphere.agraph.edge.EdgeUtil;
 import azzmosphere.agraph.plane.GraphUtils;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
+import azzmosphere.agraph.subgraph.SubgraphMapperInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
@@ -36,20 +38,50 @@ public class PolyhedronDFS implements TranverserInterface {
     private ArrayList<Edge> edges;
     private ArrayList<Integer> adjacencyMatrix;
     private ArrayList<VertexInterface> vertices;
+    private SubgraphMapperInterface mapper;
 
-    @Override
-    public LinkedHashSet<SubgraphInterface> findAllSubgraphs() {
-        return null;
+    private int POLYGON_ANGLES_SUM = 180;
+
+
+    public PolyhedronDFS(SubgraphMapperInterface mapper) {
+        this.mapper = mapper;
     }
 
     @Override
-    public LinkedHashSet<SubgraphInterface> findAllSubgraphs(VertexInterface v) {
-        return null;
+    public LinkedHashSet<SubgraphInterface> findAllSubgraphs() throws Exception {
+
+        LinkedHashSet<SubgraphInterface> subgraphs = new LinkedHashSet<>();
+
+        for (VertexInterface v : vertices) {
+            subgraphs = dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, subgraphs);
+            if (GraphUtils.isPolyhedron(vertices.size(), subgraphs.size(), edges.size())) {
+                break;
+            }
+        }
+        return subgraphs;
+    }
+
+    @Override
+    public LinkedHashSet<SubgraphInterface> findAllSubgraphs(VertexInterface v) throws Exception {
+
+        return dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, new LinkedHashSet<>());
+    }
+
+    @Override
+    public void setMapper(SubgraphMapperInterface mapper) {
+        this.mapper = mapper;
     }
 
     @Override
     public boolean isBalanced() {
-        return GraphUtils.isPolyhedron(vertices.size(), edges.size(), findAllSubgraphs().size());
+        boolean  isPolyhedron = false;
+        try {
+            isPolyhedron = GraphUtils.isPolyhedron(vertices.size(), edges.size(), findAllSubgraphs().size());
+        }
+        catch (Exception e) {
+            isPolyhedron = false;
+        }
+        return isPolyhedron;
     }
 
     @Override
@@ -81,4 +113,89 @@ public class PolyhedronDFS implements TranverserInterface {
     public void setEdges(ArrayList<Edge> edges) {
         this.edges = edges;
     }
+
+    /*
+     * Perform the DFS search.
+     *
+     */
+    private LinkedHashSet<SubgraphInterface>   dfs(VertexInterface currentNode,
+                                                   VertexInterface required,
+                                                   SubgraphInterface currentPath,
+                                                   int transversedEdges,
+                                                   double angleSum,
+                                                   LinkedHashSet<SubgraphInterface> faces) throws Exception {
+
+        if (Math.round(angleSum) > POLYGON_ANGLES_SUM) {
+            return faces;
+        }
+
+        else if (currentNode.isEqual(required) && currentPath.getEdges().size() > 0) {
+            Edge e2 = (Edge) currentPath.getEdges().toArray()[0];
+            Edge e1 = (Edge) currentPath.getEdges().toArray()[currentPath.getEdges().size() - 1];
+            angleSum += EdgeUtil.computeAngle(e1, e2);
+
+            if (Math.round(angleSum) == POLYGON_ANGLES_SUM) {
+                faces.add(currentPath);
+            }
+            return faces;
+        }
+        else if (currentNode.isEqual(required)) {
+            currentPath.addVertex(currentNode);
+        }
+
+        return transverseNode(currentNode, required, currentPath, angleSum, transversedEdges, faces);
+    }
+
+    /*
+     * transverse the current node and recursivly call the dfs search.
+     */
+    private LinkedHashSet<SubgraphInterface> transverseNode(VertexInterface currentNode,
+                                                            VertexInterface required,
+                                                            SubgraphInterface currentPath,
+                                                            double angleSum, int transversedEdges,
+                                                            LinkedHashSet<SubgraphInterface> faces)
+            throws Exception  {
+        for (int vid : GraphUtils.getAdjacentVertices(currentNode.getId(), adjacencyMatrix)) {
+            VertexInterface v = vertices.get(vid);
+            double newAngleSum = angleSum;
+            Edge e1 = findEdge(currentNode, v);
+            SubgraphInterface newCurrentPath = currentPath.clone();
+
+            if (GraphUtils.isMarked(e1.getId(), transversedEdges)) {
+                continue;
+            }
+
+            if (!currentNode.isEqual(required)) {
+
+                VertexInterface lastVertex = (VertexInterface) currentPath.getVertices().toArray()[currentPath.getVertices().size() - 1];
+                if (lastVertex.getId() == vid) {
+                    continue;
+                }
+            }
+
+            int newTansversedEdges = GraphUtils.markVertex(e1.getId(), transversedEdges);
+
+            if (currentPath.getEdges().size() >= 1) {
+
+                Edge e2 = (Edge) currentPath.getEdges().toArray()[currentPath.getEdges().size() - 1];
+                newAngleSum += EdgeUtil.computeAngle(e1, e2);
+            }
+
+            newCurrentPath.addEdge(e1);
+            newCurrentPath.addVertex(vertices.get(vid));
+            faces = dfs(vertices.get(vid), required, newCurrentPath, newTansversedEdges, newAngleSum, faces);
+        }
+
+        return faces;
+    }
+
+    private Edge findEdge(VertexInterface v1, VertexInterface v2) {
+        for (Edge e : edges) {
+            if (e.containsNodes(v1, v2)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 }

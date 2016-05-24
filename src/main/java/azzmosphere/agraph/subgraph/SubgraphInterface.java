@@ -17,4 +17,5 @@ public interface SubgraphInterface {
     void addEdge(Edge e, VertexInterface v1, VertexInterface v2);
     void addEdge(Edge e);
     void addVertex(VertexInterface v);
+    SubgraphInterface clone() throws CloneNotSupportedException;
 }

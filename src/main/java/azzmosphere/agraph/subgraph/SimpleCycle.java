@@ -1,6 +1,7 @@
 package azzmosphere.agraph.subgraph;
 
 import azzmosphere.agraph.edge.Edge;
+import azzmosphere.agraph.plane.GraphUtils;
 import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.LinkedHashSet;
@@ -39,6 +40,14 @@ public class SimpleCycle implements SubgraphInterface {
     public enum EDGE_DIRECTION {
         FORWARD,
         BACKWARD;
+    }
+
+    protected  void setEdges(LinkedHashSet<Edge> edges) {
+        this.edges = edges;
+    }
+
+    protected void setVertices(LinkedHashSet<VertexInterface> vertices) {
+        this.vertices = vertices;
     }
 
     /**
@@ -105,5 +114,31 @@ public class SimpleCycle implements SubgraphInterface {
     @Override
     public void addEdge(Edge e) {
         edges.add(e);
+    }
+
+    @Override
+    public SimpleCycle clone() throws CloneNotSupportedException {
+        SimpleCycle s = new SimpleCycle();
+        s.setEdges((LinkedHashSet<Edge>) getEdges().clone());
+        s.setVertices((LinkedHashSet<VertexInterface>) getVertices().clone());
+        return s;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        SimpleCycle cycle = (SimpleCycle) o;
+
+        return (cycle.hashCode() == hashCode()) ? true : false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 0;
+
+        for (VertexInterface v : getVertices()) {
+            hashCode = GraphUtils.markVertex(v.getId(), hashCode);
+        }
+
+        return hashCode;
     }
 }

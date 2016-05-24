@@ -2,7 +2,7 @@ import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
-import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
@@ -66,7 +66,7 @@ public class TestDFSCube {
 
     @Before
     public void initialize() throws Exception {
-        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
 
 
         // Create three dimensional vertices.
@@ -79,25 +79,25 @@ public class TestDFSCube {
         v7 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 4}), "v7");
         v8 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 4}), "v8");
 
-        e1 = pg.createEdge(v1, v2, "e1"); // e1
-        e2 = pg.createEdge(v2, v3, "e2"); // e2
+        e1 = pg.createEdge(v1, v2, "e1", Edge.Axis.XAXIS); // e1
+        e2 = pg.createEdge(v2, v3, "e2", Edge.Axis.YAXIS); // e2
 
-        e3 = pg.createEdge(v3, v4, "e3"); // e3
-        e4 = pg.createEdge(v4, v1, "e4"); // e4
+        e3 = pg.createEdge(v3, v4, "e3", Edge.Axis.XAXIS); // e3
+        e4 = pg.createEdge(v4, v1, "e4", Edge.Axis.YAXIS); // e4
 
-        e5 = pg.createEdge(v1, v5, "e5"); // e5
-        e6 = pg.createEdge(v5, v6, "e6"); // e6
+        e5 = pg.createEdge(v1, v5, "e5", Edge.Axis.ZAXIS); // e5
+        e6 = pg.createEdge(v5, v6, "e6", Edge.Axis.XAXIS); // e6
 
-        e7 = pg.createEdge(v2, v6, "e7"); // e7
-        e8 = pg.createEdge(v6, v8, "e8"); // e8
+        e7 = pg.createEdge(v2, v6, "e7", Edge.Axis.ZAXIS); // e7
+        e8 = pg.createEdge(v6, v8, "e8", Edge.Axis.YAXIS); // e8
 
-        e9 = pg.createEdge(v5, v7, "v9"); // e9
+        e9 = pg.createEdge(v5, v7, "v9", Edge.Axis.YAXIS); // e9
 
-        e10 = pg.createEdge(v7, v8, "e10"); // e10
+        e10 = pg.createEdge(v7, v8, "e10", Edge.Axis.XAXIS); // e10
 
-        e11 = pg.createEdge(v3, v8, "e11"); // e11
+        e11 = pg.createEdge(v3, v8, "e11", Edge.Axis.ZAXIS); // e11
 
-        e12 = pg.createEdge(v4, v7, "e12"); // e12
+        e12 = pg.createEdge(v4, v7, "e12", Edge.Axis.ZAXIS); // e12
     }
 
     @Test
@@ -111,10 +111,10 @@ public class TestDFSCube {
 
         // The first face should be v1, v2, v3, v4, v1 - Note that the first element is dropped because we started
         // the search on that one.
-        assertThat(f.getVertices().toArray()[0].equals(v2), is(true)); //V2
-        assertThat(f.getVertices().toArray()[1].equals(v3), is(true)); //V3
-        assertThat(f.getVertices().toArray()[2].equals(v4), is(true)); //V4
-        assertThat(f.getVertices().toArray()[3].equals(v1), is(true)); //V1
+        assertThat(f.getVertices().toArray()[0].equals(v1), is(true)); //V1
+        assertThat(f.getVertices().toArray()[1].equals(v2), is(true)); //V2
+        assertThat(f.getVertices().toArray()[2].equals(v3), is(true)); //V3
+        assertThat(f.getVertices().toArray()[3].equals(v4), is(true)); //V4
 
         // Follow edges e1, e2, e3, e4
         assertThat(f.getEdges().toArray()[0].equals(e1), is(true));
@@ -154,6 +154,8 @@ public class TestDFSCube {
 
     @Test
     public void shouldFindAllFacesInCube() throws Exception {
+
+
         TranverserInterface dfs = pg.getTransverser();
         LinkedHashSet<SubgraphInterface> faces = dfs.findAllSubgraphs();
 

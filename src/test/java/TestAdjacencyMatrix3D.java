@@ -1,8 +1,8 @@
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
-import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 import azzmosphere.agraph.vertices.VertexInterface;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class TestAdjacencyMatrix3D {
 
     @Before
     public void initialize() throws Exception {
-        pg = new PlannerGraph(new RegularPolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
 
 
         // Create three dimensional vertices.

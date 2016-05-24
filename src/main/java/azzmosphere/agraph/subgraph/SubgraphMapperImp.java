@@ -1,6 +1,6 @@
 package azzmosphere.agraph.subgraph;
 
-import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
 
 /**
  *
@@ -11,7 +11,7 @@ import azzmosphere.agraph.tranverser.RegularPolyhedronDFS;
 public class SubgraphMapperImp implements SubgraphMapperInterface {
 
     private enum SubgraphTypes implements SubgraphMapperInterface {
-        SIMPLE_CYCLE() {
+        REGULAR_POLYHEDRON() {
             @Override
             public SubgraphInterface getSubGraphObject(String transverserClassName) {
                 return new SimpleCycle();
@@ -19,10 +19,21 @@ public class SubgraphMapperImp implements SubgraphMapperInterface {
 
             @Override
             public String toString() {
-                return RegularPolyhedronDFS.class.getCanonicalName();
+                return PolyhedronDFS.class.getCanonicalName();
+            }
+        },
+
+        POLYHEDRON() {
+            @Override
+            public SubgraphInterface getSubGraphObject(String transverserClassName) {
+                return new SimpleCycle();
+            }
+
+            @Override
+            public String toString() {
+                return PolyhedronDFS.class.getCanonicalName();
             }
         };
-
     }
 
     @Override

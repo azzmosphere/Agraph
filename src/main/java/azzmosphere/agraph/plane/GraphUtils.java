@@ -63,4 +63,18 @@ public class GraphUtils {
     public static boolean isPolyhedron(int v, int e, int f) {
         return ((v - e + f) == 2);
     }
+
+    /*
+    * Return the adjacent vertices for node id.
+    */
+    public static ArrayList<Integer> getAdjacentVertices(int id, ArrayList<Integer> adjacencyMatrix) {
+        ArrayList<Integer> a = new ArrayList<>();
+
+        for (int i = 0; i < adjacencyMatrix.size(); i++) {
+            if (GraphUtils.isAdjacent(id, i, adjacencyMatrix)) {
+                a.add(i);
+            }
+        }
+        return a;
+    }
 }
