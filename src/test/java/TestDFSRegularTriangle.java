@@ -12,26 +12,26 @@ import vertices.TestClassVerticesMapperImpl;
 
 import java.util.LinkedHashSet;
 
-//import static org.hamcrest.CoreMatchers.is;
-//import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  *
  * Find faces in a regular triangle. The diagram and vertices and edges are described below.
  *
  *             V2
- *  4         / | \
- *  3  E3   /   |  \  E2
- *  2      /  / V4\ \
- *  1    / /        \\
- *  0  V1 -----------V3
- *     0   1   2   3  4
+ *  5         / | \
+ *  4  E3   /   |  \  E2
+ *  3      /  / V4\ \
+ *  2    / /        \\
+ *  1  V1 -----------V3
+ *     1   2   3   4  5
  *            E1
  *
- *   V1(0,0,0)
- *   V2(2,4,2)
- *   V3(4,0,0)
- *   V4(2,2,4)
+ *   V1(1,1,1)
+ *   V2(3,5,3)
+ *   V3(5,1,1)
+ *   V4(3,3,5)
  *
  *   E1(V1,V3)
  *   E2(V3,V2)
@@ -69,26 +69,25 @@ public class TestDFSRegularTriangle {
     @Before
     public void initilise() throws Exception {
         pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
-        v1 = pg.attachVertex(vf.createVertex(data, new int[]{0, 0, 0}), "v1");
-        v2 = pg.attachVertex(vf.createVertex(data, new int[]{2, 4, 2}), "v2");
-        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 0, 0}), "v3");
-        v4 = pg.attachVertex(vf.createVertex(data, new int[]{2, 2, 4}), "v4");
+        v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1");
+        v2 = pg.attachVertex(vf.createVertex(data, new int[]{3, 6, 3}), "v2");
+        v3 = pg.attachVertex(vf.createVertex(data, new int[]{6, 1, 1}), "v3");
+        v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 3, 6}), "v4");
 
         e1 = pg.createEdge(v1, v3, "e1", Edge.Axis.XAXIS);
         e2 = pg.createEdge(v3, v2, "e2", Edge.Axis.YAXIS);
-        e3 = pg.createEdge(v1, v2, "e3", Edge.Axis.XAXIS);
+        e3 = pg.createEdge(v2, v1, "e3", Edge.Axis.YAXIS);
         e4 = pg.createEdge(v1, v4, "e4", Edge.Axis.ZAXIS);
-        e5 = pg.createEdge(v3, v4, "e5", Edge.Axis.ZAXIS);
-        e6 = pg.createEdge(v4, v2, "e2", Edge.Axis.YAXIS);
+        e5 = pg.createEdge(v4, v2, "e5", Edge.Axis.XAXIS);
+        e6 = pg.createEdge(v4, v3, "e6", Edge.Axis.YAXIS);
     }
 
     @Test
-    public void shouldBeBalances() throws Exception {
+    public void shouldFindTrangles() throws Exception {
 
         pg.getTransverser().isBalanced();
 
         LinkedHashSet<SubgraphInterface> faces = pg.getTransverser().findAllSubgraphs(v1);
-
-        //assertThat(pg.getTransverser().isBalanced(), is(true));
+        assertThat(faces.size(), is(2));
     }
 }
