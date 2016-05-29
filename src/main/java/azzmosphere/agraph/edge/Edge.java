@@ -13,10 +13,29 @@ import java.util.ArrayList;
  */
 public class Edge implements Comparable<Edge> {
 
-    public enum Axis {
-        XAXIS,
-        YAXIS,
-        ZAXIS;
+    private interface BitMask {
+        int getBitMask();
+    }
+
+    public enum Axis implements BitMask {
+        XAXIS{
+            @Override
+            public int getBitMask() {
+                return 0x000000001;
+            }
+        },
+        YAXIS{
+            @Override
+            public int getBitMask() {
+                return 0x000000010;
+            }
+        },
+        ZAXIS{
+            @Override
+            public int getBitMask() {
+                return 0x000000100;
+            }
+        };
     }
 
     private VertexInterface tail;
@@ -138,25 +157,17 @@ public class Edge implements Comparable<Edge> {
         Coordinate[] coordinatesV1 = getHead().getCoordinates();
         Coordinate[] coordinatesV2 = getTail().getCoordinates();
 
-        int axis = 0;
-        switch (joiningAxis) {
-            case XAXIS:
-                axis = 0;
-                break;
-            case YAXIS:
-                axis = 1;
-                break;
-            case ZAXIS:
-                axis = 2;
-                break;
-            default:
-                axis = 0;
+
+        double[] coordinates = new double[3];
+        for (int i = 0; i < 2; i ++) {
+            coordinates[i] = coordinatesV1[i].getCoordinate() - coordinatesV2[i].getCoordinate();
+
+            if (coordinates[i] < 0) {
+                coordinates[i] = coordinates[i] * -1;
+            }
         }
-        int length = coordinatesV1[axis].getCoordinate() - coordinatesV2[axis].getCoordinate();
-        if (length < 0) {
-            length = length * -1;
-        }
-        this.length = length;
+
+        this.length = EdgeUtil.computeEdgeSize(coordinates[0], coordinates[1], coordinates[2]);
     }
 
     @Override

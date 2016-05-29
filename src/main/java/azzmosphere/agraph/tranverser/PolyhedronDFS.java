@@ -53,7 +53,7 @@ public class PolyhedronDFS implements TranverserInterface {
         LinkedHashSet<SubgraphInterface> subgraphs = new LinkedHashSet<>();
 
         for (VertexInterface v : vertices) {
-            subgraphs = dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, subgraphs);
+            subgraphs = dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, subgraphs, 0);
             if (GraphUtils.isPolyhedron(vertices.size(), subgraphs.size(), edges.size())) {
                 break;
             }
@@ -64,7 +64,7 @@ public class PolyhedronDFS implements TranverserInterface {
     @Override
     public LinkedHashSet<SubgraphInterface> findAllSubgraphs(VertexInterface v) throws Exception {
 
-        return dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, new LinkedHashSet<>());
+        return dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, new LinkedHashSet<>(), 0);
     }
 
     @Override
@@ -123,7 +123,8 @@ public class PolyhedronDFS implements TranverserInterface {
                                                    SubgraphInterface currentPath,
                                                    int transversedEdges,
                                                    double angleSum,
-                                                   LinkedHashSet<SubgraphInterface> faces) throws Exception {
+                                                   LinkedHashSet<SubgraphInterface> faces,
+                                                   int dimensions) throws Exception {
 
         if (Math.round(angleSum) > POLYGON_ANGLES_SUM) {
             return faces;
@@ -143,7 +144,7 @@ public class PolyhedronDFS implements TranverserInterface {
             currentPath.addVertex(currentNode);
         }
 
-        return transverseNode(currentNode, required, currentPath, angleSum, transversedEdges, faces);
+        return transverseNode(currentNode, required, currentPath, angleSum, transversedEdges, faces, dimensions);
     }
 
     /*
@@ -153,13 +154,23 @@ public class PolyhedronDFS implements TranverserInterface {
                                                             VertexInterface required,
                                                             SubgraphInterface currentPath,
                                                             double angleSum, int transversedEdges,
-                                                            LinkedHashSet<SubgraphInterface> faces)
+                                                            LinkedHashSet<SubgraphInterface> faces,
+                                                            int dimensions)
             throws Exception  {
         for (int vid : GraphUtils.getAdjacentVertices(currentNode.getId(), adjacencyMatrix)) {
             VertexInterface v = vertices.get(vid);
             double newAngleSum = angleSum;
             Edge e1 = findEdge(currentNode, v);
             SubgraphInterface newCurrentPath = currentPath.clone();
+
+            if ((e1.getJoiningAxis().getBitMask() & dimensions) != e1.getJoiningAxis().getBitMask()) {
+                if (dimCount(dimensions) <= 2) {
+                    dimensions |= e1.getJoiningAxis().getBitMask();
+                }
+            }
+            else {
+                return faces;
+            }
 
             if (GraphUtils.isMarked(e1.getId(), transversedEdges)) {
                 continue;
@@ -183,7 +194,13 @@ public class PolyhedronDFS implements TranverserInterface {
 
             newCurrentPath.addEdge(e1);
             newCurrentPath.addVertex(vertices.get(vid));
-            faces = dfs(vertices.get(vid), required, newCurrentPath, newTansversedEdges, newAngleSum, faces);
+            faces = dfs(vertices.get(vid),
+                    required,
+                    newCurrentPath,
+                    newTansversedEdges,
+                    newAngleSum,
+                    faces,
+                    dimensions);
         }
 
         return faces;
@@ -196,6 +213,14 @@ public class PolyhedronDFS implements TranverserInterface {
             }
         }
         return null;
+    }
+
+    private static int dimCount(int dimensions) {
+        // Java: use >>> instead of >>
+        // C or C++: use uint32_t
+        dimensions = dimensions - ((dimensions >>> 1) & 0x55555555);
+        dimensions = (dimensions & 0x33333333) + ((dimensions >>> 2) & 0x33333333);
+        return (((dimensions + (dimensions >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
     }
 
 }
