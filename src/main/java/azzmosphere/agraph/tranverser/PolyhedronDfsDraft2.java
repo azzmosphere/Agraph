@@ -113,12 +113,12 @@ public class PolyhedronDfsDraft2 implements TranverserInterface {
         for (int nodeId : GraphUtils.getAdjacentVertices(v.getId(), adjacencyMatrix)) {
             SubgraphInterface currentPath = mapper.getSubGraphObject(PolyhedronDFS.class.getCanonicalName());
             VertexInterface v2 = vertices.get(nodeId);
-            Edge edge = findEdge(v,v2);
+            Edge edge = findEdge(v, v2);
             currentPath.addVertex(v);
             currentPath.addVertex(v2);
             currentPath.addEdge(edge);
             int dimensions = 0 | edge.getJoiningAxis().getBitMask();
-            rv = dfs(faces, v,v2, currentPath, dimensions);
+            rv = dfs(faces, v, v2, currentPath, dimensions);
         }
         return rv;
     }
@@ -167,8 +167,8 @@ public class PolyhedronDfsDraft2 implements TranverserInterface {
         float angleSum = 0;
         Edge e1, e2 = null;
 
-        for (int i = 1; i < currentPath.getEdges().size(); i ++) {
-            e1 = (Edge) currentPath.getEdges().toArray()[i -1];
+        for (int i = 1; i < currentPath.getEdges().size(); i++) {
+            e1 = (Edge) currentPath.getEdges().toArray()[i - 1];
             e2 = (Edge) currentPath.getEdges().toArray()[i];
 
             angleSum += EdgeUtil.computeAngle(e1.getLength(), e2.getLength());

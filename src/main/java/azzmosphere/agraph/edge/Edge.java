@@ -18,19 +18,19 @@ public class Edge implements Comparable<Edge> {
     }
 
     public enum Axis implements BitMask {
-        XAXIS{
+        XAXIS {
             @Override
             public int getBitMask() {
                 return 0x000000001;
             }
         },
-        YAXIS{
+        YAXIS {
             @Override
             public int getBitMask() {
                 return 0x000000010;
             }
         },
-        ZAXIS{
+        ZAXIS {
             @Override
             public int getBitMask() {
                 return 0x000000100;
@@ -159,7 +159,7 @@ public class Edge implements Comparable<Edge> {
 
 
         double[] coordinates = new double[3];
-        for (int i = 0; i < 2; i ++) {
+        for (int i = 0; i < 2; i++) {
             coordinates[i] = coordinatesV1[i].getCoordinate() - coordinatesV2[i].getCoordinate();
 
             if (coordinates[i] < 0) {
