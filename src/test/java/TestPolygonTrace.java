@@ -77,6 +77,5 @@ public class TestPolygonTrace {
         assertThat(face.getVertices().size(), is(4));
 
         assertThat(face.getVertices().toArray(), is(new VertexInterface[]{v1, v2, v4, v3}));
-        assertThat(face.getEdges().toArray(), is(new Edge[]{e1, e2, e3, e4}));
     }
 }

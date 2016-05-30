@@ -9,7 +9,6 @@ import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aaron.spiteri on 27/05/2016.

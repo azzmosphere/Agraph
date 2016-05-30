@@ -59,6 +59,10 @@ public class EdgeUtil {
         return Math.sqrt(sqr(x) + sqr(y) + sqr(z));
     }
 
+    public static double computeEdgeSize(double x, double y) {
+        return Math.sqrt(sqr(x) + sqr(y));
+    }
+
     /**
      * Create a imaginary edge between two vertices so that the length can be calculated.
      *

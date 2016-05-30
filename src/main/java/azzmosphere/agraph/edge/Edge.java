@@ -1,7 +1,5 @@
 package azzmosphere.agraph.edge;
 
-import azzmosphere.agraph.Coordinate;
-import azzmosphere.agraph.plane.GraphUtils;
 import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
