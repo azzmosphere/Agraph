@@ -22,9 +22,8 @@ public class EdgeUtil {
         return computeAngle(a, b, c);
     }
 
-    public static double computeAngle(double a, double b, double c) {
-        //return acosToDegress(((b * b) + (c * c) - (a * a)) / (2 * b * c));
-        return acosToDegress((sqr(a) + sqr(b) - sqr(c)) / (2 * a * b));
+    public static double computeAngle(double x, double y, double z) {
+        return acosToDegress((sqr(x) + sqr(z) - sqr(y)) / (2 * x * z));
     }
 
     public static double sqr(double x) {
@@ -33,7 +32,7 @@ public class EdgeUtil {
 
     public static double computeAngle(Edge e1, Edge e2) {
 
-        return computeAngle(e1.getLength(), e2.getLength(), computeImaginaryEdgeLength(e1, e2));
+        return computeAngle(e1.getLength(), computeImaginaryEdgeLength(e1, e2), e2.getLength());
     }
 
     public static double acosToDegress(double x) {

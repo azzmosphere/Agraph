@@ -11,28 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 /**
- *
- * Detect polygons within a polyhedron graph.
- *
- *
- * TODO: This is a work in progress.
- *
- * The way it is planned to work is that it will use a DFS search to transverse a path, as it is doing this it computes
- * the inner edge of each angle in the polygon it is trying to detect.
- *
- * If it:
- *   a) Reaches the required vertex and the sum of the angles is not 180 degrees; or
- *   b) The sum of the angles before it reaches the required vertex is greater the the absolute value of 180
- *
- * the path is ignored because it is not a polygon.
- *
- * it transverses every connected edge to the starting vertex in order to do this. To detect all faces it does this
- * for every vertex on the graph and ignores any duplicated faces.  The space required for this is:
- *
- *  O(e) and the complexity is O(e log e) where e is the number of edges.
- *
- *
- * Created by aaron.spiteri on 21/05/2016.
+ * Created by aaron.spiteri on 27/05/2016.
  */
 public class PolyhedronDFS implements TranverserInterface {
     private ArrayList<Edge> edges;
@@ -40,48 +19,35 @@ public class PolyhedronDFS implements TranverserInterface {
     private ArrayList<VertexInterface> vertices;
     private SubgraphMapperInterface mapper;
 
-    private int POLYGON_ANGLES_SUM = 180;
-
-
     public PolyhedronDFS(SubgraphMapperInterface mapper) {
         this.mapper = mapper;
     }
 
     @Override
     public LinkedHashSet<SubgraphInterface> findAllSubgraphs() throws Exception {
-
-        LinkedHashSet<SubgraphInterface> subgraphs = new LinkedHashSet<>();
+        LinkedHashSet<SubgraphInterface> faces = new LinkedHashSet<>();
 
         for (VertexInterface v : vertices) {
-            subgraphs = dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, subgraphs, 0);
-            if (GraphUtils.isPolyhedron(vertices.size(), subgraphs.size(), edges.size())) {
+            dfsPrimer(v, faces);
+
+            if (GraphUtils.isPolyhedron(vertices.size(), edges.size(), faces.size())) {
                 break;
             }
         }
-        return subgraphs;
+        return faces;
     }
 
     @Override
     public LinkedHashSet<SubgraphInterface> findAllSubgraphs(VertexInterface v) throws Exception {
+        LinkedHashSet<SubgraphInterface> faces = new LinkedHashSet<>();
+        dfsPrimer(v, faces);
 
-        return dfs(v, v, mapper.getSubGraphObject(getClass().getCanonicalName()), 0, 0, new LinkedHashSet<>(), 0);
-    }
-
-    @Override
-    public void setMapper(SubgraphMapperInterface mapper) {
-        this.mapper = mapper;
+        return faces;
     }
 
     @Override
     public boolean isBalanced() {
-        boolean  isPolyhedron = false;
-        try {
-            isPolyhedron = GraphUtils.isPolyhedron(vertices.size(), edges.size(), findAllSubgraphs().size());
-        }
-        catch (Exception e) {
-            isPolyhedron = false;
-        }
-        return isPolyhedron;
+        return false;
     }
 
     @Override
@@ -114,98 +80,14 @@ public class PolyhedronDFS implements TranverserInterface {
         this.edges = edges;
     }
 
-    /*
-     * Perform the DFS search.
-     *
-     */
-    private LinkedHashSet<SubgraphInterface>   dfs(VertexInterface currentNode,
-                                                   VertexInterface required,
-                                                   SubgraphInterface currentPath,
-                                                   int transversedEdges,
-                                                   double angleSum,
-                                                   LinkedHashSet<SubgraphInterface> faces,
-                                                   int dimensions) throws Exception {
-
-        if (Math.round(angleSum) > POLYGON_ANGLES_SUM) {
-            return faces;
-        }
-
-        else if (currentNode.isEqual(required) && currentPath.getEdges().size() > 0) {
-            Edge e2 = (Edge) currentPath.getEdges().toArray()[0];
-            Edge e1 = (Edge) currentPath.getEdges().toArray()[currentPath.getEdges().size() - 1];
-            angleSum += EdgeUtil.computeAngle(e1, e2);
-
-            if (Math.round(angleSum) == POLYGON_ANGLES_SUM) {
-                faces.add(currentPath);
-            }
-            return faces;
-        }
-        else if (currentNode.isEqual(required)) {
-            currentPath.addVertex(currentNode);
-        }
-
-        return transverseNode(currentNode, required, currentPath, angleSum, transversedEdges, faces, dimensions);
+    @Override
+    public void setMapper(SubgraphMapperInterface mapper) {
+        this.mapper = mapper;
     }
 
     /*
-     * transverse the current node and recursivly call the dfs search.
+     * Returns the corresponding edge to v1 and v2.
      */
-    private LinkedHashSet<SubgraphInterface> transverseNode(VertexInterface currentNode,
-                                                            VertexInterface required,
-                                                            SubgraphInterface currentPath,
-                                                            double angleSum, int transversedEdges,
-                                                            LinkedHashSet<SubgraphInterface> faces,
-                                                            int dimensions)
-            throws Exception  {
-        for (int vid : GraphUtils.getAdjacentVertices(currentNode.getId(), adjacencyMatrix)) {
-            VertexInterface v = vertices.get(vid);
-            double newAngleSum = angleSum;
-            Edge e1 = findEdge(currentNode, v);
-            SubgraphInterface newCurrentPath = currentPath.clone();
-
-            if ((e1.getJoiningAxis().getBitMask() & dimensions) != e1.getJoiningAxis().getBitMask()) {
-                if (dimCount(dimensions) <= 2) {
-                    dimensions |= e1.getJoiningAxis().getBitMask();
-                }
-            }
-            else {
-                return faces;
-            }
-
-            if (GraphUtils.isMarked(e1.getId(), transversedEdges)) {
-                continue;
-            }
-
-            if (!currentNode.isEqual(required)) {
-
-                VertexInterface lastVertex = (VertexInterface) currentPath.getVertices().toArray()[currentPath.getVertices().size() - 1];
-                if (lastVertex.getId() == vid) {
-                    continue;
-                }
-            }
-
-            int newTansversedEdges = GraphUtils.markVertex(e1.getId(), transversedEdges);
-
-            if (currentPath.getEdges().size() >= 1) {
-
-                Edge e2 = (Edge) currentPath.getEdges().toArray()[currentPath.getEdges().size() - 1];
-                newAngleSum += EdgeUtil.computeAngle(e1, e2);
-            }
-
-            newCurrentPath.addEdge(e1);
-            newCurrentPath.addVertex(vertices.get(vid));
-            faces = dfs(vertices.get(vid),
-                    required,
-                    newCurrentPath,
-                    newTansversedEdges,
-                    newAngleSum,
-                    faces,
-                    dimensions);
-        }
-
-        return faces;
-    }
-
     private Edge findEdge(VertexInterface v1, VertexInterface v2) {
         for (Edge e : edges) {
             if (e.containsNodes(v1, v2)) {
@@ -215,6 +97,9 @@ public class PolyhedronDFS implements TranverserInterface {
         return null;
     }
 
+    /*
+     * Returns how many bits have been set in a bitmask.
+     */
     private static int dimCount(int dimensions) {
         // Java: use >>> instead of >>
         // C or C++: use uint32_t
@@ -223,4 +108,89 @@ public class PolyhedronDFS implements TranverserInterface {
         return (((dimensions + (dimensions >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
     }
 
+    private boolean dfsPrimer(VertexInterface v, LinkedHashSet<SubgraphInterface> faces) throws Exception {
+        boolean rv = false;
+        for (int nodeId : GraphUtils.getAdjacentVertices(v.getId(), adjacencyMatrix)) {
+            SubgraphInterface currentPath = mapper.getSubGraphObject(PolyhedronDFS.class.getCanonicalName());
+            VertexInterface v2 = vertices.get(nodeId);
+            Edge edge = findEdge(v, v2);
+            currentPath.addVertex(v);
+            currentPath.addVertex(v2);
+            currentPath.addEdge(edge);
+            int dimensions = 0 | edge.getJoiningAxis().getBitMask();
+            rv = dfs(faces, v, v2, currentPath, dimensions);
+        }
+        return rv;
+    }
+
+    protected boolean dfs(LinkedHashSet<SubgraphInterface> faces,
+                        VertexInterface requiredNode,
+                        VertexInterface currentNode,
+                        SubgraphInterface currentPath,
+                        int dimensions) throws Exception {
+
+        for (int nodeId : GraphUtils.getAdjacentVertices(currentNode.getId(), adjacencyMatrix)) {
+            if (currentPath.getEdges().contains(findEdge(currentNode, vertices.get(nodeId)))) {
+                continue;
+            }
+
+            Edge edge = findEdge(currentNode, vertices.get(nodeId));
+            if (nodeId == requiredNode.getId()) {
+                currentPath.addEdge(edge);
+                return checkPolygonProps(faces, currentPath, dimensions);
+            }
+
+            if ((edge.getJoiningAxis().getBitMask() & dimensions) != edge.getJoiningAxis().getBitMask()) {
+                if (dimCount(dimensions) <= 2) {
+                    dimensions |= edge.getJoiningAxis().getBitMask();
+                }
+                else {
+                    return false;
+                }
+            }
+
+            SubgraphInterface newPath = currentPath.clone();
+            VertexInterface nextVertex = vertices.get(nodeId);
+            newPath.addEdge(edge);
+            newPath.addVertex(nextVertex);
+            dfs(faces, requiredNode, nextVertex, newPath, dimensions);
+        }
+        return false;
+    }
+
+    /*
+     * Compute the sum of all angles in the graph and if they match the rounded value if 180 then
+     * add them to the faces
+     */
+    private boolean checkPolygonProps(LinkedHashSet<SubgraphInterface> faces,
+                               SubgraphInterface currentPath,
+                               int dimensions) {
+
+        float angleSum = 0;
+        Edge e1, e2 = null;
+
+        // Must have two dimensions
+        if (dimCount(dimensions) != 2) {
+            return false;
+        }
+
+        // Must add up to 180 (triangle). or mutiple. A square is two triangles, so
+        // would be 180 * 2 = 360.
+        for (int i = 1; i < currentPath.getEdges().size(); i++) {
+            e1 = (Edge) currentPath.getEdges().toArray()[i - 1];
+            e2 = (Edge) currentPath.getEdges().toArray()[i];
+
+            angleSum += EdgeUtil.computeAngle(e1, e2);
+        }
+
+        // Last angle is outside of the loop.
+        e1 = (Edge) currentPath.getEdges().toArray()[0];
+        angleSum += EdgeUtil.computeAngle(e1, e2);
+
+        if (Math.round(angleSum) == 180) {
+            faces.add(currentPath);
+            return true;
+        }
+        return false;
+    }
 }

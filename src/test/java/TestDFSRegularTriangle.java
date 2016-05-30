@@ -1,6 +1,5 @@
 import azzmosphere.agraph.edge.EdgeUtil;
-import azzmosphere.agraph.plane.GraphUtils;
-import azzmosphere.agraph.tranverser.PolyhedronDfsDraft2;
+import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
@@ -72,7 +71,7 @@ public class TestDFSRegularTriangle {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new PolyhedronDfsDraft2(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
         v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1"); // V1(1,1,1)
         v2 = pg.attachVertex(vf.createVertex(data, new int[]{3, 6, 3}), "v2"); // V2(3,6,3)
         v3 = pg.attachVertex(vf.createVertex(data, new int[]{6, 1, 1}), "v3"); // V3(6,1,1)
@@ -103,8 +102,6 @@ public class TestDFSRegularTriangle {
     public void shouldFindAllSubgraphs() throws Exception {
         LinkedHashSet<SubgraphInterface> faces = pg.getTransverser().findAllSubgraphs();
         assertThat(faces.size(), is(4));
-
-
     }
 
 
@@ -144,23 +141,57 @@ public class TestDFSRegularTriangle {
     @Test
     public void shouldCalculateCorrectAngle() throws Exception {
 
-        //assertEquals(EdgeUtil.computeAngle(e1.getLength(), e3.getLength()), 45.0, 1);
-        //assertEquals(EdgeUtil.computeAngle(e1.getLength(), e2.getLength()), 45.0, 1);
+        double e1l = 5, e2l = 6.15, e3l = 5.74;
+
+        // e3 to e1 = 69.606°
+        double angle1 = EdgeUtil.computeAngle(e3l, e2l, e1l);
+        assertEquals(angle1, 69.606, 1);
+
+        // e1 to e2 = 60.937°
+        double angle2 = EdgeUtil.computeAngle(e1l, e3l, e2l);
+        assertEquals(angle2, 60.937, 1);
+
+        // e2 to e3 = 49.588°
+        double angle3 = EdgeUtil.computeAngle(e2l, e1l, e3l);
+        assertEquals(angle3, 49.588, 1);
+
+        // all angles should be 180
+        assertEquals(angle1 + angle2 + angle3, 180, 1);
+    }
+
+    /**
+     * Very small deviation allowed.
+     */
+    @Test
+    public void shouldGetExactLengths() {
+        assertEquals(e1.getLength(), 5, 0.000005);
+        assertEquals(e2.getLength(), 5.830951, 0.000005);
+        assertEquals(e3.getLength(), 5.385164, 0.000005);
+
+        // e3 to e1
+        double angle1 = EdgeUtil.computeAngle(e3.getLength(), e2.getLength(), e1.getLength());
+
+        // e1 to e2
+        double angle2 = EdgeUtil.computeAngle(e1.getLength(), e3.getLength(), e2.getLength());
+
+        // e2 to e3
+        double angle3 = EdgeUtil.computeAngle(e2.getLength(), e1.getLength(), e3.getLength());
+
+        assertEquals(Math.round(angle1 + angle2 + angle3), 180);
+    }
 
 
-        // e3 to e2 = 69.606°
-        //assertEquals(EdgeUtil.computeAngle(e3.getLength(), e2.getLength()), 90.0, 1);
-        // c = arccos((x2 + y2 - z2)/2xy)
-        double angle = EdgeUtil.computeAngle(e3, e2);
-        angle = EdgeUtil.computeAngle(e3.getLength(), e2.getLength(), e1.getLength());
+    @Test
+    public void shouldComputeDerivedEdge() {
+        // e3 to e1
+        double angle1 = EdgeUtil.computeAngle(e3, e1);
 
+        // e1 to e2
+        double angle2 = EdgeUtil.computeAngle(e1, e2);
 
-        // e2 to e1 = 60.858°
-        // e3, e2, e1
-        angle = EdgeUtil.computeAngle(5.74, 6.16, 5);
+        // e2 to e3
+        double angle3 = EdgeUtil.computeAngle(e2, e3);
 
-        // e1 to e3 = 49.536°
-        // e2, e1, e3
-
+        assertEquals(Math.round(angle1 + angle2 + angle3), 180);
     }
 }
