@@ -9,7 +9,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
  */
 public class EdgeFactory {
     public static Edge createEdge(VertexInterface v1, VertexInterface v2) {
-        Edge e = new Edge();
+        Edge e = new Edge3d();
 
         e.setTail(v1);
         e.setHead(v2);

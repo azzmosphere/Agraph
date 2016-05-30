@@ -9,6 +9,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aaron.spiteri on 27/05/2016.
@@ -47,7 +48,14 @@ public class PolyhedronDFS implements TranverserInterface {
 
     @Override
     public boolean isBalanced() {
-        return false;
+        boolean rv = false;
+        try {
+            rv = GraphUtils.isPolyhedron(vertices.size(), edges.size(), findAllSubgraphs().size());
+        }
+        catch (Exception e) {
+            rv = false;
+        }
+        return rv;
     }
 
     @Override
@@ -134,26 +142,32 @@ public class PolyhedronDFS implements TranverserInterface {
                 continue;
             }
 
-            Edge edge = findEdge(currentNode, vertices.get(nodeId));
-            if (nodeId == requiredNode.getId()) {
-                currentPath.addEdge(edge);
-                return checkPolygonProps(faces, currentPath, dimensions);
-            }
 
-            if ((edge.getJoiningAxis().getBitMask() & dimensions) != edge.getJoiningAxis().getBitMask()) {
-                if (dimCount(dimensions) <= 2) {
-                    dimensions |= edge.getJoiningAxis().getBitMask();
-                }
-                else {
-                    return false;
-                }
-            }
+            Edge edge = findEdge(currentNode, vertices.get(nodeId));
 
             SubgraphInterface newPath = currentPath.clone();
             VertexInterface nextVertex = vertices.get(nodeId);
             newPath.addEdge(edge);
             newPath.addVertex(nextVertex);
-            dfs(faces, requiredNode, nextVertex, newPath, dimensions);
+            int newDimenesions = dimensions;
+
+            if (nodeId == requiredNode.getId()) {
+                newPath.addEdge(edge);
+                return checkPolygonProps(faces, newPath, newDimenesions);
+            }
+
+
+
+            if ((edge.getJoiningAxis().getBitMask() & dimensions) != edge.getJoiningAxis().getBitMask()) {
+
+                newDimenesions |= edge.getJoiningAxis().getBitMask();
+                if (dimCount(newDimenesions) > 2) {
+                    continue;
+                }
+            }
+
+
+            dfs(faces, requiredNode, nextVertex, newPath, newDimenesions);
         }
         return false;
     }
@@ -187,10 +201,14 @@ public class PolyhedronDFS implements TranverserInterface {
         e1 = (Edge) currentPath.getEdges().toArray()[0];
         angleSum += EdgeUtil.computeAngle(e1, e2);
 
-        if (Math.round(angleSum) == 180) {
+        if (Math.round(angleSum) == computeAngleCount(currentPath.getVertices().size())) {
             faces.add(currentPath);
             return true;
         }
         return false;
+    }
+
+    private int computeAngleCount(int n) {
+        return (n - 2) * 180;
     }
 }

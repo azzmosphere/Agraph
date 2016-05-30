@@ -8,6 +8,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.edge.EdgeFactory;
 import java.util.LinkedHashSet;
+import azzmosphere.agraph.edge.Axis;
 
 /**
  * Created by aaron.spiteri on 12/05/2016.
@@ -186,7 +187,7 @@ public class PlannerGraph {
         return e;
     }
 
-    public Edge createEdge(VertexInterface v1, VertexInterface v2, String label, Edge.Axis joiningAxis) throws Exception {
+    public Edge createEdge(VertexInterface v1, VertexInterface v2, String label, Axis joiningAxis) throws Exception {
         Edge e = createEdge(v1, v2);
         e.setLabel(label);
         e.setJoiningAxis(joiningAxis);

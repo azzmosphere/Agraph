@@ -5,6 +5,7 @@ import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
+import azzmosphere.agraph.edge.Axis;
 
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
@@ -54,6 +55,15 @@ public class TestEdge {
         assertTrue(e1.equals(e1));
     }
 
+    /*
+     *          E3
+     * 4    v4------v3
+     * 3    |        |
+     * 2 E4 |        | E2
+     * 1    v1------v2
+     *          E1
+     *     1  2  3  4
+     */
     @Test
     public void shouldFindAngle() throws Exception {
         GenericVertex3DStructure data = new GenericVertex3DStructure();
@@ -73,17 +83,17 @@ public class TestEdge {
         v3.setLabel("v3");
         v4.setLabel("v4");
 
-        Edge e1 = pg.createEdge(v1, v2, "e1", Edge.Axis.XAXIS);
-        Edge e2 = pg.createEdge(v2, v3, "e2", Edge.Axis.YAXIS);
-        Edge e3 = pg.createEdge(v3, v4, "e3", Edge.Axis.XAXIS);
-        Edge e4 = pg.createEdge(v4, v1, "e4", Edge.Axis.YAXIS);
+        Edge e1 = pg.createEdge(v1, v2, "e1", Axis.XAXIS);
+        Edge e2 = pg.createEdge(v2, v3, "e2", Axis.YAXIS);
+        Edge e3 = pg.createEdge(v3, v4, "e3", Axis.XAXIS);
+        Edge e4 = pg.createEdge(v4, v1, "e4", Axis.YAXIS);
 
         double angle = EdgeUtil.computeAngle(e1, e2);
         angle += EdgeUtil.computeAngle(e2, e3);
         angle += EdgeUtil.computeAngle(e3, e4);
         angle += EdgeUtil.computeAngle(e4, e1);
 
-        assertThat((int) Math.abs(angle), is(180));
+        assertThat((int) Math.round(angle), is(360));
     }
 
 }

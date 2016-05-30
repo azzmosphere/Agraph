@@ -6,6 +6,7 @@ import azzmosphere.agraph.tranverser.TranverserInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
+import azzmosphere.agraph.edge.Axis;
 import datastructures.GenericVertex3DStructure;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,34 +71,35 @@ public class TestDFSCube {
 
 
         // Create three dimensional vertices.
-        v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1");
-        v2 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 1}), "v2");
-        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 1}), "v3");
-        v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 1}), "v4");
-        v5 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 4}), "v5");
-        v6 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 4}), "v6");
-        v7 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 4}), "v7");
-        v8 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 4}), "v8");
+        v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 1}), "v1");
+        v2 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 1}), "v2");
+        v3 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 1}), "v3");
+        v4 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v4");
 
-        e1 = pg.createEdge(v1, v2, "e1", Edge.Axis.XAXIS); // e1
-        e2 = pg.createEdge(v2, v3, "e2", Edge.Axis.YAXIS); // e2
+        v5 = pg.attachVertex(vf.createVertex(data, new int[]{1, 4, 4}), "v5");
+        v6 = pg.attachVertex(vf.createVertex(data, new int[]{4, 4, 4}), "v6");
+        v7 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 4}), "v7");
+        v8 = pg.attachVertex(vf.createVertex(data, new int[]{4, 1, 4}), "v8");
 
-        e3 = pg.createEdge(v3, v4, "e3", Edge.Axis.XAXIS); // e3
-        e4 = pg.createEdge(v4, v1, "e4", Edge.Axis.YAXIS); // e4
+        e1 = pg.createEdge(v1, v2, "e1", Axis.XAXIS); // e1
+        e2 = pg.createEdge(v2, v3, "e2", Axis.YAXIS); // e2
 
-        e5 = pg.createEdge(v1, v5, "e5", Edge.Axis.ZAXIS); // e5
-        e6 = pg.createEdge(v5, v6, "e6", Edge.Axis.XAXIS); // e6
+        e3 = pg.createEdge(v3, v4, "e3", Axis.XAXIS); // e3
+        e4 = pg.createEdge(v4, v1, "e4", Axis.YAXIS); // e4
 
-        e7 = pg.createEdge(v2, v6, "e7", Edge.Axis.ZAXIS); // e7
-        e8 = pg.createEdge(v6, v8, "e8", Edge.Axis.YAXIS); // e8
+        e5 = pg.createEdge(v1, v5, "e5", Axis.ZAXIS); // e5
+        e6 = pg.createEdge(v5, v6, "e6", Axis.XAXIS); // e6
 
-        e9 = pg.createEdge(v5, v7, "v9", Edge.Axis.YAXIS); // e9
+        e7 = pg.createEdge(v2, v6, "e7", Axis.ZAXIS); // e7
+        e8 = pg.createEdge(v6, v8, "e8", Axis.YAXIS); // e8
 
-        e10 = pg.createEdge(v7, v8, "e10", Edge.Axis.XAXIS); // e10
+        e9 = pg.createEdge(v5, v7, "v9", Axis.YAXIS); // e9
 
-        e11 = pg.createEdge(v3, v8, "e11", Edge.Axis.ZAXIS); // e11
+        e10 = pg.createEdge(v7, v8, "e10", Axis.XAXIS); // e10
 
-        e12 = pg.createEdge(v4, v7, "e12", Edge.Axis.ZAXIS); // e12
+        e11 = pg.createEdge(v3, v8, "e11", Axis.ZAXIS); // e11
+
+        e12 = pg.createEdge(v4, v7, "e12", Axis.ZAXIS); // e12
     }
 
     @Test
@@ -161,6 +163,7 @@ public class TestDFSCube {
 
         assertThat(pg.getVertices().size(), is(8));
         assertThat(pg.getEdges().size(), is(12));
+        assertThat(faces.size(), is(6));
 
         assertThat(dfs.isBalanced(), is(true));
     }

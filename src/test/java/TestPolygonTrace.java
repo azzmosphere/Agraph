@@ -8,6 +8,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.vertices.VerticesMapperInterface;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
+import azzmosphere.agraph.edge.Axis;
 import datastructures.GenericVertex2DStructure;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,10 +60,10 @@ public class TestPolygonTrace {
         v3 = pg.attachVertex(vf.createVertex(data, new int[] {1, 5}), "v3");
         v4 = pg.attachVertex(vf.createVertex(data, new int[] {5, 5}), "v4");
 
-        e1 = pg.createEdge(v1, v2, "e1", Edge.Axis.XAXIS);
-        e2 = pg.createEdge(v2, v4, "e2", Edge.Axis.YAXIS);
-        e3 = pg.createEdge(v4, v3, "e3", Edge.Axis.XAXIS);
-        e4 = pg.createEdge(v3, v1, "e4", Edge.Axis.YAXIS);
+        e1 = pg.createEdge(v1, v2, "e1", Axis.XAXIS);
+        e2 = pg.createEdge(v2, v4, "e2", Axis.YAXIS);
+        e3 = pg.createEdge(v4, v3, "e3", Axis.XAXIS);
+        e4 = pg.createEdge(v3, v1, "e4", Axis.YAXIS);
     }
 
     @Test

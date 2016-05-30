@@ -23,7 +23,10 @@ public class EdgeUtil {
     }
 
     public static double computeAngle(double x, double y, double z) {
-        return acosToDegress((sqr(x) + sqr(z) - sqr(y)) / (2 * x * z));
+        double term1 = sqr(x) + sqr(z) - sqr(y);
+        double term2 = (2 * x * z);
+
+        return acosToDegress(term1 / term2);
     }
 
     public static double sqr(double x) {
@@ -53,7 +56,7 @@ public class EdgeUtil {
      * @return length
      */
     public static double computeEdgeSize(double x, double y, double z) {
-        return Math.sqrt((x * x) + (y * y) + (z * z));
+        return Math.sqrt(sqr(x) + sqr(y) + sqr(z));
     }
 
     /**
