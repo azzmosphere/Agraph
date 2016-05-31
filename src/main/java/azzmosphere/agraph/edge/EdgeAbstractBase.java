@@ -143,7 +143,7 @@ public abstract class EdgeAbstractBase implements Edge {
 
     @Override
     public boolean equals(Object o) {
-        Edge3d compareTo = (Edge3d) o;
+        Edge compareTo = (Edge) o;
         if (compareTo(compareTo) == 0) {
             return true;
         }
