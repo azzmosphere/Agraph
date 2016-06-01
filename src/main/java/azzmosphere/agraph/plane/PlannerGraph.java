@@ -3,7 +3,8 @@ package azzmosphere.agraph.plane;
 import java.util.ArrayList;
 
 import azzmosphere.agraph.subgraph.SubgraphInterface;
-import azzmosphere.agraph.tranverser.TranverserInterface;
+import azzmosphere.agraph.tranverser.TransverserInterface;
+import azzmosphere.agraph.tranverser.VerticeSearchIface;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.edge.EdgeFactory;
@@ -63,13 +64,27 @@ public class PlannerGraph {
     private ArrayList<Integer> adjacencyMatrix = new ArrayList<>();
     private ArrayList<VertexInterface> vertices = new ArrayList<>();
     private ArrayList<Edge> edges = new ArrayList<>();
-    private TranverserInterface transverser;
+    private TransverserInterface transverser;
+    private VerticeSearchIface searcher;
 
-    public PlannerGraph(TranverserInterface transverser) {
+    /**
+     * The transverser and search are set up at object construction time so that all vertices
+     * and edges that are added to the graph are included.
+     *
+     * @param transverser general transverser used for returning faces, and rebuilding the graph
+     * @param searcher search for a specific vertex and return all vertices in the related faces
+     */
+    public PlannerGraph(TransverserInterface transverser, VerticeSearchIface searcher) {
         this.transverser = transverser;
         this.transverser.setAdjacencyMatrix(adjacencyMatrix);
         this.transverser.setEdges(edges);
         this.transverser.setVertices(vertices);
+
+        this.searcher = searcher;
+        this.searcher.setAdjacencyMatrix(adjacencyMatrix);
+        this.searcher.setEdges(edges);
+        this.searcher.setVertices(vertices);
+        this.searcher.setTransverser(this.transverser);
     }
 
     /*
@@ -199,7 +214,7 @@ public class PlannerGraph {
         return edges;
     }
 
-    public TranverserInterface getTransverser() {
+    public TransverserInterface getTransverser() {
         return transverser;
     }
 
@@ -209,5 +224,9 @@ public class PlannerGraph {
 
     public ArrayList<VertexInterface> getVertices() {
         return vertices;
+    }
+
+    public VerticeSearchIface getSearcher() {
+        return searcher;
     }
 }

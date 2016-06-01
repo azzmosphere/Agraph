@@ -1,9 +1,11 @@
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import datastructures.GenericVertex2DStructure;
+import decider.MockDeciderClass;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
 
@@ -32,7 +34,10 @@ public class TestAdjacencyMatrix {
      */
     @Test
     public void shouldCreateCorrectAdjencyMatrix() throws Exception {
-        PlannerGraph pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        PlannerGraph pg = new PlannerGraph(new PolyhedronDFS(
+                new SubgraphMapperImp()),
+                new VerticeSearchDFSImp(new MockDeciderClass())
+        );
         GenericVertex2DStructure data = new GenericVertex2DStructure();
         VerticesFactory vf = new VerticesFactory(new TestClassVerticesMapperImpl());
 

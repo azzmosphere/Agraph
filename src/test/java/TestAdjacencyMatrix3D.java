@@ -1,9 +1,11 @@
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import datastructures.GenericVertex3DStructure;
+import decider.MockDeciderClass;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
@@ -49,7 +51,8 @@ public class TestAdjacencyMatrix3D {
 
     @Before
     public void initialize() throws Exception {
-        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()),
+                new VerticeSearchDFSImp(new MockDeciderClass()));
 
 
         // Create three dimensional vertices.

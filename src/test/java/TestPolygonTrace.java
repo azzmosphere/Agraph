@@ -2,14 +2,16 @@ import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
-import azzmosphere.agraph.tranverser.TranverserInterface;
+import azzmosphere.agraph.tranverser.TransverserInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperInterface;
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.vertices.VerticesMapperInterface;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import azzmosphere.agraph.edge.Axis;
 import datastructures.GenericVertex2DStructure;
+import decider.MockDeciderClass;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
@@ -36,7 +38,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TestPolygonTrace {
     private PlannerGraph pg;
     private SubgraphMapperInterface circuitMapper = new SubgraphMapperImp();
-    private TranverserInterface dfs = new PolyhedronDFS(circuitMapper);
+    private TransverserInterface dfs = new PolyhedronDFS(circuitMapper);
     private GenericVertex2DStructure data = new GenericVertex2DStructure();
     private VerticesMapperInterface vmapper = new TestClassVerticesMapperImpl();
     private VerticesFactory vf = new VerticesFactory(vmapper);
@@ -54,7 +56,7 @@ public class TestPolygonTrace {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(dfs);
+        pg = new PlannerGraph(dfs,  new VerticeSearchDFSImp(new MockDeciderClass()));
         v1 = pg.attachVertex(vf.createVertex(data, new int[] {1, 1}), "v1");
         v2 = pg.attachVertex(vf.createVertex(data, new int[] {5, 1}), "v2");
         v3 = pg.attachVertex(vf.createVertex(data, new int[] {1, 5}), "v3");

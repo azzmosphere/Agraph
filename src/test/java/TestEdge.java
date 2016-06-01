@@ -1,5 +1,6 @@
 import azzmosphere.agraph.edge.EdgeUtil;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.plane.PlannerGraph;
@@ -8,6 +9,7 @@ import azzmosphere.agraph.tranverser.PolyhedronDFS;
 import azzmosphere.agraph.edge.Axis;
 
 import datastructures.GenericVertex3DStructure;
+import decider.MockDeciderClass;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassForVertex2D;
@@ -31,7 +33,8 @@ public class TestEdge {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()),
+                new VerticeSearchDFSImp(new MockDeciderClass()));
 
         v1 = pg.attachVertex(new TestClassForVertex2D());
         v2 = pg.attachVertex(new TestClassForVertex2D());

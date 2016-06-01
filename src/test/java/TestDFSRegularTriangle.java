@@ -1,5 +1,6 @@
 import azzmosphere.agraph.edge.EdgeUtil;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
@@ -8,6 +9,7 @@ import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Axis;
 import azzmosphere.agraph.edge.Edge;
 import datastructures.GenericVertex3DStructure;
+import decider.MockDeciderClass;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
@@ -71,7 +73,8 @@ public class TestDFSRegularTriangle {
 
     @Before
     public void initilise() throws Exception {
-        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()),
+                new VerticeSearchDFSImp(new MockDeciderClass()));
         v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1"); // V1(1,1,1)
         v2 = pg.attachVertex(vf.createVertex(data, new int[]{3, 6, 3}), "v2"); // V2(3,6,3)
         v3 = pg.attachVertex(vf.createVertex(data, new int[]{6, 1, 1}), "v3"); // V3(6,1,1)

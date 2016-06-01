@@ -3,10 +3,12 @@ import azzmosphere.agraph.plane.PlannerGraph;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperImp;
 import azzmosphere.agraph.tranverser.PolyhedronDFS;
+import azzmosphere.agraph.tranverser.VerticeSearchDFSImp;
 import azzmosphere.agraph.vertices.VertexInterface;
 import azzmosphere.agraph.edge.Edge;
 import azzmosphere.agraph.vertices.VerticesFactory;
 import datastructures.GenericVertex3DStructure;
+import decider.MockDeciderClass;
 import org.junit.Before;
 import org.junit.Test;
 import vertices.TestClassVerticesMapperImpl;
@@ -60,7 +62,9 @@ public class TestDFSPyramid {
 
     @Before
     public void initilize() throws Exception {
-        pg = new PlannerGraph(new PolyhedronDFS(new SubgraphMapperImp()));
+        pg = new PlannerGraph(new PolyhedronDFS(
+                new SubgraphMapperImp()),
+                new VerticeSearchDFSImp(new MockDeciderClass()));
         v1 = pg.attachVertex(vf.createVertex(data, new int[]{1, 1, 1}), "v1");
         v2 = pg.attachVertex(vf.createVertex(data, new int[]{6, 1, 1}), "v2");
         v3 = pg.attachVertex(vf.createVertex(data, new int[]{6, 1, 6}), "v3");

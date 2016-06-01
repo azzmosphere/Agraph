@@ -6,18 +6,13 @@ import azzmosphere.agraph.plane.GraphUtils;
 import azzmosphere.agraph.subgraph.SubgraphInterface;
 import azzmosphere.agraph.subgraph.SubgraphMapperInterface;
 import azzmosphere.agraph.vertices.VertexInterface;
-
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 /**
  * Created by aaron.spiteri on 27/05/2016.
  */
-public class PolyhedronDFS implements TranverserInterface {
-    private ArrayList<Edge> edges;
-    private ArrayList<Integer> adjacencyMatrix;
-    private ArrayList<VertexInterface> vertices;
-    private SubgraphMapperInterface mapper;
+public class PolyhedronDFS extends TransverserAbstractBase implements TransverserInterface {
+
 
     public PolyhedronDFS(SubgraphMapperInterface mapper) {
         this.mapper = mapper;
@@ -57,52 +52,7 @@ public class PolyhedronDFS implements TranverserInterface {
         return rv;
     }
 
-    @Override
-    public ArrayList<VertexInterface> getVertices() {
-        return vertices;
-    }
 
-    @Override
-    public void setVertices(ArrayList<VertexInterface> vertices) {
-        this.vertices = vertices;
-    }
-
-    @Override
-    public ArrayList<Integer> getAdjacencyMatrix() {
-        return adjacencyMatrix;
-    }
-
-    @Override
-    public void setAdjacencyMatrix(ArrayList<Integer> adjacencyMatrix) {
-        this.adjacencyMatrix = adjacencyMatrix;
-    }
-
-    @Override
-    public ArrayList<Edge> getEdges() {
-        return edges;
-    }
-
-    @Override
-    public void setEdges(ArrayList<Edge> edges) {
-        this.edges = edges;
-    }
-
-    @Override
-    public void setMapper(SubgraphMapperInterface mapper) {
-        this.mapper = mapper;
-    }
-
-    /*
-     * Returns the corresponding edge to v1 and v2.
-     */
-    private Edge findEdge(VertexInterface v1, VertexInterface v2) {
-        for (Edge e : edges) {
-            if (e.containsNodes(v1, v2)) {
-                return e;
-            }
-        }
-        return null;
-    }
 
     /*
      * Returns how many bits have been set in a bitmask.

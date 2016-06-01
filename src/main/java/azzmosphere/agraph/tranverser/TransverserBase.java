@@ -9,17 +9,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 /**
- *
- * Interface to describe behaviour for finding subgraphs.
- *
- * Created by aaron.spiteri on 16/05/2016.
+ * Created by aaron.spiteri on 31/05/2016.
  */
-public interface TranverserInterface {
-    LinkedHashSet<SubgraphInterface> findAllSubgraphs() throws Exception;
+public interface TransverserBase {
 
-    LinkedHashSet<SubgraphInterface> findAllSubgraphs(VertexInterface v) throws Exception;
-
-    boolean isBalanced();
 
     ArrayList<VertexInterface> getVertices();
 
@@ -34,4 +27,6 @@ public interface TranverserInterface {
     void setEdges(ArrayList<Edge> edges);
 
     void setMapper(SubgraphMapperInterface mapper);
+
+    LinkedHashSet<SubgraphInterface> findAllSubgraphs() throws Exception;
 }
